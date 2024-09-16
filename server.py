@@ -16,10 +16,14 @@ def server(url):
     # TODO: Hey student! This is the function you need to change! Don't miss it!
     ######
     
-    if url == "\about_me.html":
-        return open("helloWorldCorrec.html").read()
+    if url == "/" or url == "/main":
+        return open("/static/html/mainpage.html").read()
+    elif url == "/static/html/listings.html":
+        return open("static/html/listings.html").read()
+    elif url == "/static/html/listing_example.html":
+        return open("static/html/listing_example.html").read()
     else:
-        return "Not that. Wrong page"
+        return open("/static/html/404.html").read()
 
     return "Lets get down to businuess"
     
