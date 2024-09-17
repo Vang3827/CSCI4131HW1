@@ -15,17 +15,16 @@ def server(url):
     ######
     # TODO: Hey student! This is the function you need to change! Don't miss it!
     ######
-    
-    if url == "/" or url == "/main":
-        return open("/static/html/mainpage.html").read()
-    elif url == "/static/html/listings.html":
-        return open("static/html/listings.html").read()
-    elif url == "/static/html/listing_example.html":
-        return open("static/html/listing_example.html").read()
-    else:
-        return open("/static/html/404.html").read()
+    path = url.split("?")[0]
 
-    return "Lets get down to businuess"
+    if path == "/" or path == "/main":
+        return open("CSCI4131HW1/static/html/mainpage.html").read()
+    elif path == "/gallery":
+        return open("CSCI4131HW1/static/html/listing.html").read()
+    elif path == "/listing/1":
+        return open("CSCI4131HW1/static/html/listing_example.html").read()
+    else:
+        return open("CSCI4131HW1/static/html/404.html").read()
     
 
 # You shouldn't need to change content below this. It would be best if you just left it alone.
