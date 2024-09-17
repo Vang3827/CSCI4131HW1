@@ -18,13 +18,13 @@ def server(url):
     path = url.split("?")[0]
 
     if path == "/" or path == "/main":
-        return open("CSCI4131HW1/static/html/mainpage.html").read()
+        return open("static/html/mainpage.html").read()
     elif path == "/gallery":
-        return open("CSCI4131HW1/static/html/listing.html").read()
+        return open("static/html/listings.html").read()
     elif path == "/listing/1":
-        return open("CSCI4131HW1/static/html/listing_example.html").read()
+        return open("static/html/listing_example.html").read()
     else:
-        return open("CSCI4131HW1/static/html/404.html").read()
+        return open("static/html/404.html").read()
     
 
 # You shouldn't need to change content below this. It would be best if you just left it alone.
