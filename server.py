@@ -11,21 +11,17 @@ listings = [
      "bids":[
          {"bidder 1":"Luke Lukenson", "bid amount":"2,500", "comment":"Dailer driver right here."},{"bidder 2":"Peter Porker", "bid amount":"6,500", "comment":""}
          ]},
-    {"vehicle 3":"Toyota Tundra","url":"https://images.unsplash.com/photo-1621993202323-f438eec934ff?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","description":"Longer text for descrption", "category":"truck", "numeric ID": 3, "Date": "09/10/2024",
+    {"vehicle 3":"Toyota Tundra","url":"static/html/listing3.html","description":"Longer text for descrption", "category":"truck", "numeric ID": 3, "Date": "09/10/2024",
      "bids":[
          {"bidder 1":"Adam Apple", "bid amount":"6,500", "comment":"Work truck."},{"bidder 2":"Ben Benji", "bid amount":"6,500", "comment":"New truck for me."},{"bidder 3":"Cedar Cider", "bid amount":"9,500", "comment":"The Cedar Mobile."}
          ]},
-    {"vehicle 4":"Subaru Forester","url":"https://images.unsplash.com/photo-1710171940308-8f9670ecfeda?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","description":"Longer text for descrption", "category":"suv", "numeric ID": 4, "Date": "09/10/2024",
+    {"vehicle 4":"Subaru Forester","url":"static/html/listing4.html","description":"Longer text for descrption", "category":"suv", "numeric ID": 4, "Date": "09/10/2024",
      "bids":[
          {"bidder 1":"Mike Micheal", "bid amount":"3,500", "comment":""},{"bidder 2":"Justin Time", "bid amount":"4,500", "comment":"Family vehicle."}
          ]}
 ]
 
 # PUT YOUR GLOBAL VARIABLES AND HELPER FUNCTIONS HERE.
-# path = ""
-# listing_id =""
-
-
 
 def escape_html(str):
     str = str.replace("&", "&amp;")
@@ -72,26 +68,20 @@ def parse_query_parameters(response):
 
 def render_listing(listing):
     print("in render listing")
-    listing_id = int(path[9:])
+    listing_id = path[9:]
     print(listing_id)
     newPath = ""
-
-    # if path[9:] != int:
-    # return "static/html/404.html"
     
-    for dicts in listing:
-        if dicts.get("numeric ID") == listing_id:
-            newPath = (dicts["url"])
-            return newPath
+    try:
+        for dicts in listing:
+            if dicts.get("numeric ID") == int(listing_id):
+                newPath = (dicts["url"])
+                return newPath
+    except ValueError:
+        return "static/html/404.html"
     
-    # return (f"{newPath}")
-    # return "/static/html/listing.html"
-    # return "static\html\listing_example.html"
-    
-    
-    
-
-    
+    return "static/html/404.html"
+        
 
 
 def render_gallery(query, category):

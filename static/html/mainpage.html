@@ -6,10 +6,17 @@
     <title>Auto Auctions</title>
 </head>
 <body>
-    <ul>
-        <li><a href = "/">About Us</a></li>
-        <li><a href = "/gallery">Gallery</a></li>
-    </ul>
+    <form action="gallery" method="get" class="topnav">
+        <a href="/">About</a>
+        <a href="/gallery">Gallery</a>
+        <input name="query" type="search" placeholder="Search..">
+        <select name="category" id="cars">
+            <option value="coupe">Coupe</option>
+            <option value="truck">Truck</option>
+            <option value="suv">SUV</option>
+          </select>
+        <input type="submit" value="Submit">
+      </form>
     <h1>Auto Acutions</h1>
     <h2>"Bid, Win, Drive!"</h2>
     <img src="https://images.unsplash.com/photo-1652660771416-032b5debd5be?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt ="Auto Acution Image">
