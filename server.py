@@ -42,11 +42,22 @@ def unescape_url(url_str):
 
 def parse_query_parameters(response):
     # Split the query string into key-value pairs
-
+    # key, *val =response.split("&")
+    keyValPairs = response.split("&")
     # Initialize a dictionary to store parsed parameters
-
+    urlDict = dict()
     # Iterate over each key-value pair
+    for key, val in keyValPairs:
+        urlDict[key]= val
     # Split the pair by '=' to separate key and value
+
+    txt = "?color=%237766a9&mood=hate+it+it&name=buloova"
+
+    x = txt.split("&")
+
+    for i in x:
+        newX = i.split("=")
+        print(newX)
 
     return {}
 
