@@ -2,9 +2,23 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import re
 
 listings = [
-    {"vehicle 1":"Dodge Challenger","url":"https://images.unsplash.com/photo-1632686341369-8a7991237930?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","description":"Longer text for descrption", "category":"car", "numeric ID": "1", "Date": "08/20/2024","bids":["$4,500","$5,000","$7,200"]},
-    {"vehicle 2":"Ford Mustang","url":"https://images.unsplash.com/photo-1625231334168-35067f8853ed?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","description":"Longer text for descrption", "category":"car", "numeric ID": "2", "Date": "09/15/2024","bids":["$2,500","$5,500","$9,200"]},
-    {"vehicle 3":"Toyota Tundra","url":"https://images.unsplash.com/photo-1621993202323-f438eec934ff?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","description":"Longer text for descrption", "category":"truck", "numeric ID": "3", "Date": "09/10/2024","bids":["$8,500","$9,000"]}
+    {"vehicle 1":"Dodge Challenger","url":"https://images.unsplash.com/photo-1632686341369-8a7991237930?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","description":"Longer text for descrption", "category":"coupe", "numeric ID": "1", "Date": "08/20/2024",
+     "bids":[
+         {"bidder 1":"Carl k", "bid amount":"4,500", "comment":"I would love this car."},{"bidder 2":"Sam Samson", "bid amount":"5,500", "comment":"I just want to use money."}
+         ]
+    },
+    {"vehicle 2":"Ford Mustang","url":"https://images.unsplash.com/photo-1625231334168-35067f8853ed?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","description":"Longer text for descrption", "category":"coupe", "numeric ID": "2", "Date": "09/15/2024",
+     "bids":[
+         {"bidder 1":"Luke Lukenson", "bid amount":"2,500", "comment":"Dailer driver right here."},{"bidder 2":"Peter Porker", "bid amount":"6,500", "comment":""}
+         ]},
+    {"vehicle 3":"Toyota Tundra","url":"https://images.unsplash.com/photo-1621993202323-f438eec934ff?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","description":"Longer text for descrption", "category":"truck", "numeric ID": "3", "Date": "09/10/2024",
+     "bids":[
+         {"bidder 1":"Adam Apple", "bid amount":"6,500", "comment":"Work truck."},{"bidder 2":"Ben Benji", "bid amount":"6,500", "comment":"New truck for me."},{"bidder 3":"Cedar Cider", "bid amount":"9,500", "comment":"The Cedar Mobile."}
+         ]},
+    {"vehicle 4":"Subaru Forester","url":"https://images.unsplash.com/photo-1710171940308-8f9670ecfeda?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","description":"Longer text for descrption", "category":"suv", "numeric ID": "3", "Date": "09/10/2024",
+     "bids":[
+         {"bidder 1":"Mike Micheal", "bid amount":"3,500", "comment":""},{"bidder 2":"Justin Time", "bid amount":"4,500", "comment":"Family vehicle."}
+         ]}
 ]
 
 # PUT YOUR GLOBAL VARIABLES AND HELPER FUNCTIONS HERE.
