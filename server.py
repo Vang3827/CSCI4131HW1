@@ -203,6 +203,8 @@ def server_POST(url: str, body: str) -> tuple[str | bytes, str, int]:
     This function should return three values (string or bytes, string, int) in a list or tuple. The first is the content to return
     The second is the content-type. The third is the HTTP Status Code for the response
     """
+    return url,"",201
+
     pass
 
 
