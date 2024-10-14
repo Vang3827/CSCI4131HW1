@@ -1,3 +1,70 @@
 body{
     background-color: lightblue;
+    margin: 0px;
+    padding: 0px;
+    font-family: garamond;
+}
+.topnav{
+    background-color: burlywood;
+    padding: 15px 18px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.topnav a:hover{
+    background-color: blueviolet;
+}
+
+.topnav div{
+    float: right;
+    font-family: 'Courier New', Courier, monospace;
+}
+option{
+    font-family: inherit;
+}
+input{
+    font-family: inherit;
+}
+img{
+    max-width: 100%;
+    max-height: 100vh;
+}
+
+h1{
+    font-family: copperplate;
+    text-align: center;
+}
+h2{
+    text-align: center;
+}
+strong{
+    color: rgba(165, 13, 163, 0.748);
+}
+em{
+    color: red;
+}
+.row{
+    display: flex;
+}
+.column{
+    flex: 40%;
+    padding: 5px;
+}
+.column.des{
+    background-color: rgb(152, 122, 83);
+}
+.main.content{
+    text-align: center;
+}
+.bids{
+    font-size: 20px;
+    text-align: center;
+}
+.bidder{
+    text-align: left;
+}
+.bidAmount{
+    text-align: right;
+}
+table{
+    text-align: center;
 }

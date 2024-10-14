@@ -1,23 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/main.css">
+  <title>Auto Auction</title>
 </head>
+
 <body>
-    <form action="listing_example.html" method="get" class="topnav">
-        <a href="/">About</a>
-        <a href="/gallery">Gallery</a>
-        <input name ="query" type="search" placeholder="Search..">
-        <select name="category" id="cars">
-          <option>None</option>
-            <option value="small">Small</option>
-            <option value="truck">Truck</option>
-            <option value="suv">SUV</option>
-          </select>
-        <input type="submit" value="Submit">
-      </form>
-    <h1>Toyota Tundra</h1>
+  <form action="gallery" method="get" class="topnav">
+    <a href="/">About</a>
+    <a href="/gallery">Gallery</a>
+    <input name="query" type="search" placeholder="Search..">
+    <select name="category" id="cars">
+      <option>None</option>
+      <option value="small">Small</option>
+      <option value="truck">Truck</option>
+      <option value="suv">SUV</option>
+    </select>
+    <input type="submit" value="Submit">
+  </form>
+  <h1>Toyota Tundra</h1>
+  <div>
+    <div class="row">
+      <div class="column">
+        <img
+          src="https://images.unsplash.com/photo-1621993202323-f438eec934ff?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Toyota Image">
+      </div>
+      <div class="column">
+        <div>
+          <p class="bids">Bids</p>
+        </div>
+        <div>
+          <p class="bidder">yodaMan</p>
+          <p class="bidAmount">$17,551</p>
+        </div>
+        <div>
+          <p class="bidder">CarGuy</p>
+          <p class="bidAmount">$12,713</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
+
 </html>

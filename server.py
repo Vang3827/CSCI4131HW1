@@ -22,7 +22,7 @@ listings = [
 ]
 
 # PUT YOUR GLOBAL VARIABLES AND HELPER FUNCTIONS HERE.
-global path
+# global path
 global listing_id
 global query
 global vehicleList
@@ -133,6 +133,7 @@ def render_gallery(query, category):
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/main.css">
         <title>Auto Auction</title>
     </head>
     <body>
@@ -189,13 +190,13 @@ def server(url):
     The second is the content-type.
     """
     # YOUR CODE GOES HERE!
-    # global path
+    global path
     # global listing_id
     # global query
     path = url.split("?")[0]
     
     
-    # print(path)
+    print(path)
 
     if path in "/" or path in "/main":
         return open("static/html/mainpage.html").read(), "text/html"

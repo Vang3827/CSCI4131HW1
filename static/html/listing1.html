@@ -1,23 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auto Auction</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/main.css">
+  <title>Auto Auction</title>
 </head>
+
 <body>
-    <form action="gallery" method="get" class="topnav">
-        <a href="/">About</a>
-        <a href="/gallery">Gallery</a>
-        <input name = "query" type="search" placeholder="Search..">
-        <select name="category" id="cars">
-            <option >None</option>
-            <option value="small">Small</option>
-            <option value="truck">Truck</option>
-            <option value="suv">SUV</option>
-          </select>
-        <input type="submit" value="Submit">
-      </form>
-    <h1>Dodge Challenger</h1>
+  <form action="gallery" method="get" class="topnav">
+    <a href="/">About</a>
+    <a href="/gallery">Gallery</a>
+    <input name="query" type="search" placeholder="Search..">
+    <select name="category" id="cars">
+      <option>None</option>
+      <option value="small">Small</option>
+      <option value="truck">Truck</option>
+      <option value="suv">SUV</option>
+    </select>
+    <input type="submit" value="Submit">
+  </form>
+  <h1>Dodge Challenger</h1>
+  <div>
+    <div class="row">
+      <div class="column">
+        <img
+          src="https://images.unsplash.com/photo-1632686341369-8a7991237930?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Dodge Challenger Image">
+      </div>
+      <div class="column">
+        <div>
+          <p class="bids">Bids</p>
+        </div>
+        <div>
+          <p class="bidder">Car_Person</p>
+          <p class="bidAmount">$14,651</p>
+        </div>
+        <div>
+          <p class="bidder">A_Car</p>
+          <p class="bidAmount">$9,661</p>
+        </div>
+        <div>
+          <p class="bidder">CarBidder</p>
+          <p class="bidAmount">$4,881</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
+
 </html>
