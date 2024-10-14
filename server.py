@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import re
+import urllib
 
+# PUT YOUR GLOBAL VARIABLES AND HELPER FUNCTIONS HERE.
 listings = [
     {"vehicle":"Dodge Challenger","url":"static/html/listing1.html","description":"Longer text for descrption", "category":"small", "numeric ID": 1, "Date": "08/20/2024",
      "bids":[
@@ -21,26 +22,12 @@ listings = [
          ]}
 ]
 
-# PUT YOUR GLOBAL VARIABLES AND HELPER FUNCTIONS HERE.
-# global path
-global listing_id
-global query
-global vehicleList
-
 def checkListDict (query,category):
     print("in ChecklistDict")
     
     vehicleList=[]
-    # for dicts in listings:
-    #         # print(dicts)
-    #         if (query.lower() in dicts.get("vehicle").lower()):
-    #             vehicleList.append(dicts["vehicle"])
-                # print("in checkListDict function")
+
     for i in range(len(listings)):
-        # print(listings[i])
-        # if (query.lower() in (i.get("vehicle").lower)):
-        #     vehicleList.append(i)
-    # return vehicleList
         if(query.lower() in listings[i].get("vehicle").lower()):
             vehicleList.append(listings[i])
     print(vehicleList)
@@ -60,7 +47,6 @@ def unescape_url(url_str):
 
     # NOTE -- this is the only place urllib is allowed on this assignment.
     return urllib.parse.unquote_plus(url_str)
-
 
 def parse_query_parameters(response):
     newStrList=[]
@@ -88,7 +74,6 @@ def parse_query_parameters(response):
     print(urlDict)
     return urlDict
 
-
 def render_listing(listing):
     # print("in render listing")
     listing_id = path[9:]
@@ -101,11 +86,9 @@ def render_listing(listing):
                 newPath = (dicts["url"])
                 return newPath
     except ValueError:
-        return "static/html/404.html"
+        return "static/html/404.html","text/html",404
     
-    return "static/html/404.html"
-        
-
+    return "static/html/404.html","text/html",404
 
 def render_gallery(query, category):
     print(type(query),query,type(category),category)
@@ -169,37 +152,28 @@ def render_gallery(query, category):
         </table>
     </body>
     </html>
-    ""","text/html"
+    ""","text/html",200
 
-
-# Provided function -- converts numbers like 42 or 7.347 to "$42.00" or "$7.35"
-def typeset_dollars(number):
-    return f"${number:.2f}"
-
-
-def server(url):
+def server_GET(url: str) -> tuple[str | bytes, str, int]:
     """
-    url is a *PARTIAL* URL. If the browser requests `http://localhost:4131/contact?name=joe#test`
-    then the `url` parameter will have the value "/contact?name=joe". So you can expect the PATH
-    and any PARAMETERS from the url, but nothing else.
+    url is a *PARTIAL* URL. If the browser requests `http://localhost:4131/contact?name=joe`
+    then the `url` parameter will have the value "/contact?name=joe". (so the schema and
+    authority will not be included, but the full path, any query, and any anchor will be included)
 
     This function is called each time another program/computer makes a request to this website.
     The URL represents the requested file.
 
-    This function should return two strings in a list or tuple. The first is the content to return
-    The second is the content-type.
+    This function should return three values (string or bytes, string, int) in a list or tuple. The first is the content to return
+    The second is the content-type. The third is the HTTP Status Code for the response
     """
     # YOUR CODE GOES HERE!
     global path
-    # global listing_id
-    # global query
     path = url.split("?")[0]
-    
     
     print(path)
 
     if path in "/" or path in "/main":
-        return open("static/html/mainpage.html").read(), "text/html"
+        return open("static/html/mainpage.html").read(), "text/html",200
     elif "/gallery" in path:
         if "?" in url:
             print(url)
@@ -207,22 +181,44 @@ def server(url):
             print(query)
             return render_gallery(parse_query_parameters(query).get("query"),parse_query_parameters(query).get("category"))
         else:
-            return open("static/html/listings.html").read(), "text/html"
+            return open("static/html/listings.html").read(), "text/html",200
     elif "/listing" in path:
         newPath = render_listing(listings)
-        return open(newPath).read(), "text/html"
+        return open(newPath).read(), "text/html",200
     elif "/main.css":
-        return open("static/css/main.css").read(), "text/css"
+        return open("static/css/main.css").read(), "text/css",200
     else:
-        return open("static/html/404.html").read(), "text/html"
+        return open("static/html/404.html").read(), "text/html",404
+    pass
+
+
+def server_POST(url: str, body: str) -> tuple[str | bytes, str, int]:
+    """
+    url is a *PARTIAL* URL. If the browser requests `http://localhost:4131/contact?name=joe`
+    then the `url` parameter will have the value "/contact?name=joe". (so the schema and
+    authority will not be included, but the full path, any query, and any anchor will be included)
+
+    This function is called each time another program/computer makes a POST request to this website.
+
+    This function should return three values (string or bytes, string, int) in a list or tuple. The first is the content to return
+    The second is the content-type. The third is the HTTP Status Code for the response
+    """
+    pass
+
 
 # You shouldn't need to change content below this. It would be best if you just left it alone.
 
 
 class RequestHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        # Call the student-edited server code.
-        message, content_type = server(self.path)
+    def do_POST(self):
+        # Read the content-length header sent by the BROWSER
+        content_length = int(self.headers.get("Content-Length", 0))
+        # read the data being uploaded by the BROWSER
+        body = self.rfile.read(content_length)
+        # we're making some assumptions here -- but decode to a string.
+        body = str(body, encoding="utf-8")
+
+        message, content_type, response_code = server_POST(self.path, body)
 
         # Convert the return value into a byte string for network transmission
         if type(message) == str:
@@ -231,7 +227,30 @@ class RequestHandler(BaseHTTPRequestHandler):
         # prepare the response object with minimal viable headers.
         self.protocol_version = "HTTP/1.1"
         # Send response code
-        self.send_response(200)
+        self.send_response(response_code)
+        # Send headers
+        # Note -- this would be binary length, not string length
+        self.send_header("Content-Length", len(message))
+        self.send_header("Content-Type", content_type)
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.end_headers()
+
+        # Send the file.
+        self.wfile.write(message)
+        return
+
+    def do_GET(self):
+        # Call the student-edited server code.
+        message, content_type, response_code = server_GET(self.path)
+
+        # Convert the return value into a byte string for network transmission
+        if type(message) == str:
+            message = bytes(message, "utf8")
+
+        # prepare the response object with minimal viable headers.
+        self.protocol_version = "HTTP/1.1"
+        # Send response code
+        self.send_response(response_code)
         # Send headers
         # Note -- this would be binary length, not string length
         self.send_header("Content-Length", len(message))
@@ -253,6 +272,3 @@ def run():
 
 
 run()
-
-# render_listing(listings)
-# print(parse_query_parameters("?query=tundra&category=truck"))
