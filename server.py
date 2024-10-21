@@ -21,6 +21,23 @@ listings = [
          {"bidder 1":"Mike Micheal", "bid amount":"3,500", "comment":""},{"bidder 2":"Justin Time", "bid amount":"4,500", "comment":"Family vehicle."}
          ]}
 ]
+newListing =[]
+
+def postFunc (body):
+    newParams = parse_query_parameters(body)
+    add_new_listing(newParams)
+    if add_new_listing == True:
+        newListing.append(newParams)
+        print(newListing)
+    
+def add_new_listing(params):
+    if (any(params.values()) == False):
+        return False
+    else:
+        return True
+
+def add_new_bid(params):
+    pass
 
 def checkListDict (query,category):
     print("in ChecklistDict")
@@ -185,8 +202,16 @@ def server_GET(url: str) -> tuple[str | bytes, str, int]:
     elif "/listing" in path:
         newPath = render_listing(listings)
         return open(newPath).read(), "text/html",200
+    elif "/create" in path:
+        return open("static/html/create.html").read(), "text/html",200
     elif "/main.css":
         return open("static/css/main.css").read(), "text/css",200
+    # elif "/new_listingTest.js":
+    #     return open("static/js/new_listing.js").read(), "text/javascript",200
+    # elif "/bid.js":
+    #     return open("static/js/bid.js").read(), "text/javascript",200
+    # elif "/table.js":
+    #     return open("static/js/table.js").read(), "text/javascript",200
     else:
         return open("static/html/404.html").read(), "text/html",404
     pass
@@ -203,7 +228,15 @@ def server_POST(url: str, body: str) -> tuple[str | bytes, str, int]:
     This function should return three values (string or bytes, string, int) in a list or tuple. The first is the content to return
     The second is the content-type. The third is the HTTP Status Code for the response
     """
-    return url,"",201
+    # return url,"",201
+    if url == "/create":
+        postFunc(body)
+        result = "".join(newListing)
+        return open("static/html/create_success.html").read(), "text/html",200
+    elif url =="/place_bid":
+        return body,body,201
+    else:
+        return "failed",body,400
 
     pass
 

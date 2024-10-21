@@ -29,11 +29,11 @@ img{
     max-height: 100vh;
 }
 
-h1{
+#mainH1{
     font-family: copperplate;
     text-align: center;
 }
-h2{
+#mainH2{
     text-align: center;
 }
 strong{
@@ -67,4 +67,24 @@ em{
 }
 table{
     text-align: center;
+}
+.createBody{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.createDiv{
+    width: 125px;
+    display: flex;
+    flex-direction: column;
+}
+
+.createDiv label{
+    /* width: 200px; */
+    display: inline-block;
+}
+
+.createDiv label{
+    padding-top: 20px;
 }
