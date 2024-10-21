@@ -185,9 +185,10 @@ def server_GET(url: str) -> tuple[str | bytes, str, int]:
     """
     # YOUR CODE GOES HERE!
     global path
+    print(url)
     path = url.split("?")[0]
     
-    print(path)
+    # print(path)
 
     if path in "/" or path in "/main":
         return open("static/html/mainpage.html").read(), "text/html",200
@@ -204,10 +205,10 @@ def server_GET(url: str) -> tuple[str | bytes, str, int]:
         return open(newPath).read(), "text/html",200
     elif "/create" in path:
         return open("static/html/create.html").read(), "text/html",200
-    elif "/main.css":
+    elif "/main":
         return open("static/css/main.css").read(), "text/css",200
-    # elif "/new_listingTest.js":
-    #     return open("static/js/new_listing.js").read(), "text/javascript",200
+    elif "/new_listing":
+        return open("static/js/new_listing.js").read(), "text/javascript",200
     # elif "/bid.js":
     #     return open("static/js/bid.js").read(), "text/javascript",200
     # elif "/table.js":
