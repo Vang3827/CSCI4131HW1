@@ -3,7 +3,7 @@ import urllib
 
 # PUT YOUR GLOBAL VARIABLES AND HELPER FUNCTIONS HERE.
 numericID = 0
-
+listingBool = False
 listings = [
     {"vehicle":"Dodge Challenger","url":"static/html/listing1.html","description":"Longer text for descrption", "category":"small", "numeric ID": 1, "Date": "08/20/2024",
      "bids":[
@@ -28,21 +28,23 @@ newListing =[]
 def postFunc(body):
     global numericID
     newParams = parse_query_parameters(body)
-    listingBool = False
+    
     add_new_listing(newParams)
     print("New ListingBool == ", listingBool)
 
     if listingBool == True:
-        print("if statement with listingbool -->",listingBool)
+        print("In True postFunch listingBool is--->",listingBool)
         numericID += 1
         newParams["numeric ID"] = numericID
         newListing.append(newParams)
         print(newListing)
         return open("static/html/create_success.html").read(), "text/html",200
     else:
+        print("In false postFunch listingBool is--->",listingBool)
         return open("static/html/create_fail.html").read(),"text/html",400
     
 def add_new_listing(params):
+    global listingBool
     print("In add_new_listing(params)")
     # print(any(params.values()))
     print((params.values() == ""))
@@ -63,11 +65,13 @@ def add_new_listing(params):
         
     if "" in params.values():
         listingBool = False
-        print("listingBool = ",listingBool)
+        print("in false listingBool = ",listingBool)
+        print(params)
         return listingBool
     else:
         listingBool = True
-        print("listingBool = ",listingBool)
+        print("In true so listingBool = ",listingBool)
+        print(params)
         return listingBool
 
 def add_new_bid(params):
