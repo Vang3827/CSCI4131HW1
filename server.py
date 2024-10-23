@@ -2,6 +2,8 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import urllib
 
 # PUT YOUR GLOBAL VARIABLES AND HELPER FUNCTIONS HERE.
+numericID = 0
+
 listings = [
     {"vehicle":"Dodge Challenger","url":"static/html/listing1.html","description":"Longer text for descrption", "category":"small", "numeric ID": 1, "Date": "08/20/2024",
      "bids":[
@@ -23,18 +25,50 @@ listings = [
 ]
 newListing =[]
 
-def postFunc (body):
+def postFunc(body):
+    global numericID
     newParams = parse_query_parameters(body)
+    listingBool = False
     add_new_listing(newParams)
-    if add_new_listing == True:
+    print("New ListingBool == ", listingBool)
+
+    if listingBool == True:
+        print("if statement with listingbool -->",listingBool)
+        numericID += 1
+        newParams["numeric ID"] = numericID
         newListing.append(newParams)
         print(newListing)
+        return open("static/html/create_success.html").read(), "text/html",200
+    else:
+        return open("static/html/create_fail.html").read(),"text/html",400
     
 def add_new_listing(params):
-    if (any(params.values()) == False):
-        return False
+    print("In add_new_listing(params)")
+    # print(any(params.values()))
+    print((params.values() == ""))
+    # if (any(params.values()) == False and (params.values()) == '' ):
+    #     print("In false add_new_listing")
+    #     return False
+    # elif(any(params.values()) == True):
+    #     return True
+    # for key,value in params.items():
+    #     if value =="":
+    #         listingBool = False
+    #         print("listingBool = ",listingBool)
+    #         return listingBool
+    #     else:
+    #         listingBool = True
+    #         print("listingBool = ",listingBool)
+    #         return listingBool
+        
+    if "" in params.values():
+        listingBool = False
+        print("listingBool = ",listingBool)
+        return listingBool
     else:
-        return True
+        listingBool = True
+        print("listingBool = ",listingBool)
+        return listingBool
 
 def add_new_bid(params):
     pass
@@ -88,7 +122,7 @@ def parse_query_parameters(response):
             newStrList.append((newKV[j], newKV[j+1]))
         
     urlDict=dict(newStrList)
-    print(urlDict)
+    # print(urlDict)
     return urlDict
 
 def render_listing(listing):
@@ -187,6 +221,7 @@ def server_GET(url: str) -> tuple[str | bytes, str, int]:
     global path
     print(url)
     path = url.split("?")[0]
+
     
     # print(path)
 
@@ -231,13 +266,17 @@ def server_POST(url: str, body: str) -> tuple[str | bytes, str, int]:
     """
     # return url,"",201
     if url == "/create":
-        postFunc(body)
-        result = "".join(newListing)
-        return open("static/html/create_success.html").read(), "text/html",200
+        print("In server_POST")
+        print("URL-->",url)
+        print("body-->",body)
+        print("body type --->",type(body))
+
+        
+        return postFunc(body)
     elif url =="/place_bid":
         return body,body,201
     else:
-        return "failed",body,400
+        return open("static/html/create_fail.html").read(),body,400
 
     pass
 
