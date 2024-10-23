@@ -1,11 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/main.css">
 </head>
+
 <body>
-    <h1>Listing Sccuessful</h1>
+  <form action="gallery" method="get" class="topnav">
+    <a href="/">About</a>
+    <a href="/gallery">Gallery</a>
+    <a href="/create">Add Listing</a>
+    <div>
+      <input name="query" type="search" placeholder="Search..">
+      <select name="category" id="cars">
+        <option>None</option>
+        <option value="small">Small</option>
+        <option value="truck">Truck</option>
+        <option value="suv">SUV</option>
+      </select>
+      <input type="submit" value="Submit">
+    </div>
+  </form>
+  <h1>Listing Successful</h1>
 </body>
+
 </html>

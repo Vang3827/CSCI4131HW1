@@ -26,6 +26,7 @@ listings = [
 newListing =[]
 
 def postFunc(body):
+    # TODO: Need to Max current numeric ID and add 1
     global numericID
     newParams = parse_query_parameters(body)
     
@@ -33,7 +34,6 @@ def postFunc(body):
     print("New ListingBool == ", listingBool)
 
     if listingBool == True:
-        print("In True postFunch listingBool is--->",listingBool)
         numericID += 1
         newParams["numeric ID"] = numericID
         newListing.append(newParams)
@@ -46,22 +46,7 @@ def postFunc(body):
 def add_new_listing(params):
     global listingBool
     print("In add_new_listing(params)")
-    # print(any(params.values()))
     print((params.values() == ""))
-    # if (any(params.values()) == False and (params.values()) == '' ):
-    #     print("In false add_new_listing")
-    #     return False
-    # elif(any(params.values()) == True):
-    #     return True
-    # for key,value in params.items():
-    #     if value =="":
-    #         listingBool = False
-    #         print("listingBool = ",listingBool)
-    #         return listingBool
-    #     else:
-    #         listingBool = True
-    #         print("listingBool = ",listingBool)
-    #         return listingBool
         
     if "" in params.values():
         listingBool = False

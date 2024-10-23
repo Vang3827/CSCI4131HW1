@@ -4,6 +4,9 @@ body{
     padding: 0px;
     font-family: garamond;
 }
+body form a {
+    padding-right: 25px;
+}
 .topnav{
     background-color: burlywood;
     padding: 15px 18px;
@@ -57,7 +60,18 @@ em{
 }
 .bids{
     font-size: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+.bidword{
+    padding-right: 45%;
+}
+.bidButton{
+    padding: 5px 15px;
+    font-family: 'Courier New', Courier, monospace;
     text-align: center;
+    background-color: gray;
+    color: white;
 }
 .bidder{
     text-align: left;
