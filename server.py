@@ -3,7 +3,9 @@ import urllib
 
 # PUT YOUR GLOBAL VARIABLES AND HELPER FUNCTIONS HERE.
 numericID = 0
+bidnumericID = 0
 listingBool = False
+bidBool = False
 listings = [
     {"vehicle":"Dodge Challenger","url":"static/html/listing1.html","description":"Longer text for descrption", "category":"small", "numeric ID": 1, "Date": "08/20/2024",
      "bids":[
@@ -24,15 +26,14 @@ listings = [
          ]}
 ]
 newListing =[]
+bids =[]
 
 def postFunc(body):
     # TODO: Need to Max current numeric ID and add 1
     global numericID
     newParams = parse_query_parameters(body)
-    
     add_new_listing(newParams)
-    print("New ListingBool == ", listingBool)
-
+    
     if listingBool == True:
         numericID += 1
         newParams["numeric ID"] = numericID
@@ -42,7 +43,22 @@ def postFunc(body):
     else:
         print("In false postFunch listingBool is--->",listingBool)
         return open("static/html/create_fail.html").read(),"text/html",400
+
+def postBidFunc(body):
+    # TODO: Need to Max current numeric ID and add 1
+    global bidnumericID
+    newParams = parse_query_parameters(body)
+    add_new_bid(newParams)
     
+    if bidBool == True:
+        bids.append(newParams)
+        print(bids)
+        return open("static/html/create_success.html").read(), "text/html",200
+    else:
+        print("In false postFunch listingBool is--->",bidBool)
+        return open("static/html/create_fail.html").read(),"text/html",400
+        
+
 def add_new_listing(params):
     global listingBool
     print("In add_new_listing(params)")
@@ -60,7 +76,20 @@ def add_new_listing(params):
         return listingBool
 
 def add_new_bid(params):
-    pass
+    global bidBool
+    print("In add_new_listing(params)")
+    print((params.values() == ""))
+        
+    if "" in params.values():
+        bidBool = False
+        print("in false listingBool = ",bidBool)
+        print(params)
+        return bidBool
+    else:
+        bidBool = True
+        print("In true so listingBool = ",bidBool)
+        print(params)
+        return bidBool
 
 def checkListDict (query,category):
     print("in ChecklistDict")
@@ -263,7 +292,11 @@ def server_POST(url: str, body: str) -> tuple[str | bytes, str, int]:
         
         return postFunc(body)
     elif url =="/place_bid":
-        return body,body,201
+        print("In server_POST")
+        print("URL-->",url)
+        print("body-->",body)
+        print("body type --->",type(body))
+        return postBidFunc(body)
     else:
         return open("static/html/create_fail.html").read(),body,400
 

@@ -73,11 +73,12 @@ em{
     background-color: gray;
     color: white;
 }
-.bidder{
-    text-align: left;
+.bidColumn{
+    background-color: burlywood;
 }
-.bidAmount{
-    text-align: right;
+.bidDiv{
+    display: flex;
+    justify-content: space-between;
 }
 table{
     text-align: center;
