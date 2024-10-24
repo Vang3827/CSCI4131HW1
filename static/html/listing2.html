@@ -6,6 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/main.css">
   <title>Auto Auction</title>
+  <script defer>
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("In JS script");
+
+      let btn = document.getElementById("btnButton");
+      let showhideForm = document.getElementById("bidInput")
+
+      showhideForm.style.display = "none";
+
+      btn.addEventListener("click", () =>{
+        if(showhideForm.style.display === "block"){
+          showhideForm.style.display = "none";
+        }else{
+          showhideForm.style.display = "block";
+        }
+      })
+
+    });
+  </script>
 </head>
 
 <body>
@@ -30,17 +49,35 @@
           alt="Ford Mustang Image">
       </div>
       <div class="column">
-        <div class="bids">
-          <p class="bidword">Bids</p>
-          <input class="bidButton" type="button" value="Place Bid" />
-        </div>
-        <div>
-          <p class="bidder">Hello_bidder</p>
-          <p class="bidAmount">$165651</p>
-        </div>
-        <div>
-          <p class="bidder">AnotherOne</p>
-          <p class="bidAmount">$11,661</p>
+        <div class ="bidColumn">
+          <div class="bids">
+            <p class="bidword">Bids</p>
+            <input id = "btnButton" class="bidButton" type="button" value="Place Bid" />
+          </div>
+            <form id="bidInput" action="/place_bid" method="post">
+                  <label for="name">Your name:</label>
+                  <br>
+
+                  <input type="text" id="yourName" name="yourName" placeholder="Name here">
+                  <br>
+
+                  <label for="amountInput">Amount</label>
+                  <br>
+
+                  <input type="number" id="Amount" name="Amount" placeholder="Amount here" min="1,000"><br>
+                  <input type="submit" value="Submit">
+
+                  <label for="comments">Comments</label>
+                  <textarea id="comments" name="comments" rows="4" cols="30" placeholder="Comments here"></textarea>
+                </form>
+          <div class="bidDiv">
+            <p class="bidDiv">Hello_bidder</p>
+            <p class="bidAmount">$165651</p>
+          </div>
+          <div class="bidDiv">
+            <p class="bidDiv">AnotherOne</p>
+            <p class="bidAmount">$11,661</p>
+          </div>
         </div>
       </div>
     </div>
