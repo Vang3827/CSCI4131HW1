@@ -53,6 +53,18 @@
         }, 1000);
 
         });
+
+        const element = document.querySelector('#myElement');
+
+        element.addEventListener('mouseenter', () => {
+        // Code to execute when the mouse enters the element
+        console.log('Mouse entered the element');
+        });
+
+        element.addEventListener('mouseleave', () => {
+        // Code to execute when the mouse leaves the element
+        console.log('Mouse left the element');
+        });
     </script>
 </head>
 
@@ -98,12 +110,11 @@
                 <td>6,900</td>
                 <td id = "timerThree">6 hours 05 mintues</tb>
             </tr>
-        </table>
-        <div>
-            <img src = "https://images.unsplash.com/photo-1621993202323-f438eec934ff?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="img preview" class ="effect">
-        </div>    
+        </table>   
     </div>
-    
+    <div>
+        <img src = "https://images.unsplash.com/photo-1621993202323-f438eec934ff?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="img preview" class ="effect">
+    </div> 
     <!-- <div id="preview-container">
         <div id="preview">
             <p class="box" data-img ="https://images.unsplash.com/photo-1632686341369-8a7991237930?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"></p>
