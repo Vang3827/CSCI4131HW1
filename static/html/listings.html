@@ -6,65 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/main.css">
     <title>Auto Auctions</title>
-    <script defer>
-        document.addEventListener("DOMContentLoaded", () => {
-            
-        let count = new Date("Oct 25, 2024 15:37:25").getTime();
-        let countTwo = new Date("Oct 30, 2024 15:37:25").getTime();
-        let countTre = new Date("Nov 15, 2024 15:37:25").getTime();
-
-        // Update the count down every 1 second
-        let x = setInterval(function() {
-        let now = new Date().getTime();
-        let distance = count - now;
-        let distwo = countTwo - now;
-        let distre = countTre - now;
-
-        let d = Math.floor(distance / (1000 * 60 * 60 * 24));
-        let h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        let m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        let s = Math.floor((distance % (1000 * 60)) / 1000);
-
-        let dTwo = Math.floor(distwo / (1000 * 60 * 60 * 24));
-        let hTwo = Math.floor((distwo % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        let mTwo = Math.floor((distwo % (1000 * 60 * 60)) / (1000 * 60));
-        let sTwo = Math.floor((distwo % (1000 * 60)) / 1000);
-
-        let dTre = Math.floor(distre / (1000 * 60 * 60 * 24));
-        let hTre = Math.floor((distre % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        let mTre = Math.floor((distre % (1000 * 60 * 60)) / (1000 * 60));
-        let sTre = Math.floor((distre % (1000 * 60)) / 1000);
-
-        // Display the result in the element with id="demo"
-        document.getElementById("timerOne").innerHTML = d + "d " + h + "h "
-        + m + "m " + s + "s ";
-        document.getElementById("timerTwo").innerHTML = dTwo + "d " + hTwo + "h "
-        + mTwo + "m " + sTwo + "s ";
-        document.getElementById("timerThree").innerHTML = dTre + "d " + hTre + "h "
-        + mTre + "m " + sTre + "s ";
-
-        // If the count down is finished, write some text
-        if (distance < 0) {
-            clearInterval(x);
-            document.getElementById("timerOne").innerHTML = "EXPIRED";
-            document.getElementById("timerTwo").innerHTML = "EXPIRED";
-            document.getElementById("timerThree").innerHTML = "EXPIRED";
-        }
-        }, 1000);
-
-        });
-
-        const element = document.querySelector('#myElement');
-
-        element.addEventListener('mouseenter', () => {
-        // Code to execute when the mouse enters the element
-        console.log('Mouse entered the element');
-        });
-
-        element.addEventListener('mouseleave', () => {
-        // Code to execute when the mouse leaves the element
-        console.log('Mouse left the element');
-        });
+    <script defer src="/table.js">
     </script>
 </head>
 
@@ -83,45 +25,52 @@
         <input type="submit" value="Submit">
     </form>
     <!--Table page-->
-    <h1>Auto Auction list</h1>
-    <div class="tableContainer">
-        <table border="1">
-            <tr>
-                <th>Listing</th>
-                <th>Number of Bids</th>
-                <th>Top Bid</th>
-                <th>Auction Ends</th>
-            </tr>
-            <tr class ="box" data-image = "https://images.unsplash.com/photo-1632686341369-8a7991237930?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
-                <td><a href="/listing/1">Dodge Challenger</a></td>
-                <td>15</td>
-                <td>8,000</td>
-                <td id = "timerOne"> 5 days 2 hours 05 mintues</tb>
-            </tr>
-            <tr class ="box" data-image ="https://images.unsplash.com/photo-1610378985708-ac6de045f9f3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
-                <td><a href="/listing/2">Ford Mustang</a></td>
-                <td>5</td>
-                <td>5,000</td>
-                <td id = "timerTwo"> 1 days 05 mintues</tb>
-            </tr>
-            <tr class ="box" data-image ="https://images.unsplash.com/photo-1621993202323-f438eec934ff?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
-                <td><a href="/listing/3">Toyota Tundra</a></td>
-                <td>7</td>
-                <td>6,900</td>
-                <td id = "timerThree">6 hours 05 mintues</tb>
-            </tr>
-        </table>   
-    </div>
-    <div>
-        <img src = "https://images.unsplash.com/photo-1621993202323-f438eec934ff?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="img preview" class ="effect">
-    </div> 
-    <!-- <div id="preview-container">
-        <div id="preview">
-            <p class="box" data-img ="https://images.unsplash.com/photo-1632686341369-8a7991237930?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"></p>
-            <p class="box" data-img ="https://images.unsplash.com/photo-1610378985708-ac6de045f9f3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"></p>
-            <p class="box" data-img ="https://images.unsplash.com/photo-1621993202323-f438eec934ff?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"></p>
+    <h1 class="listingh">Auto Auction list</h1>
+    <div class="listingColumn">
+        <div class="tableContainer">
+            <table border="1">
+                <tr>
+                    <th>Listing</th>
+                    <th>Number of Bids</th>
+                    <th>Top Bid</th>
+                    <th>Auction Ends</th>
+                </tr>
+                <tr class="box">
+                    <td id="imgData1"
+                        data-image="https://images.unsplash.com/photo-1632686341369-8a7991237930?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+                        <a href="/listing/1">Dodge Challenger</a>
+                    </td>
+                    <td>15</td>
+                    <td>8,000</td>
+                    <td id="timerOne"> 5 days 2 hours 05 mintues</tb>
+                </tr>
+                <tr class="box">
+                    <td id="imgData2"
+                        data-image="https://images.unsplash.com/photo-1610378985708-ac6de045f9f3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+                        <a href="/listing/2">Ford Mustang</a>
+                    </td>
+                    <td>5</td>
+                    <td>5,000</td>
+                    <td id="timerTwo"> 1 days 05 mintues</tb>
+                </tr>
+                <tr class="box">
+                    <td id="imgData3"
+                        data-image="https://images.unsplash.com/photo-1621993202323-f438eec934ff?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+                        <a href="/listing/3">Toyota Tundra</a>
+                    </td>
+                    <td>7</td>
+                    <td>6,900</td>
+                    <td id="timerThree">6 hours 05 mintues</tb>
+                </tr>
+            </table>
         </div>
-    </div> -->
+        <div class="sideOfTable" id="imgPreview">
+            <!-- <img id ="previewImg"
+                src="https://images.unsplash.com/photo-1621993202323-f438eec934ff?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="img preview"> -->
+        </div>
+    </div>
+
 </body>
 
 </html>

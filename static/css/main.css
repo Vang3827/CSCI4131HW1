@@ -110,6 +110,20 @@ table{
     z-index: 2;
     text-shadow: 0 10px 5px rgba(0,0,0,0.5);
 }
-img {
-    visibility: hidden;
-  }
+
+.tableContainer{
+    float: left;
+    padding: 10%;
+}
+
+/* .sideOfTable img{
+    display: none;
+    width: 30%;
+    height: 40%;
+    float: right;
+    padding-right: 10;
+} */
+
+.listingh{
+    text-align: center;
+}

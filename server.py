@@ -256,16 +256,18 @@ def server_GET(url: str) -> tuple[str | bytes, str, int]:
     elif "/listing" in path:
         newPath = render_listing(listings)
         return open(newPath).read(), "text/html",200
-    elif "/create" in path:
+    elif "/create" == path:
         return open("static/html/create.html").read(), "text/html",200
-    elif "/main":
+    elif "/main.css" == path:
         return open("static/css/main.css").read(), "text/css",200
-    elif "/new_listing":
+    elif "/new_listing" == path:
         return open("static/js/new_listing.js").read(), "text/javascript",200
-    # elif "/bid.js":
-    #     return open("static/js/bid.js").read(), "text/javascript",200
-    # elif "/table.js":
-    #     return open("static/js/table.js").read(), "text/javascript",200
+    elif "/bid.js":
+        return open("static/js/bid.js").read(), "text/javascript",200
+    elif "/new_listing.js":
+        return open("static/js/new_listing.js").read(), "text/javascript",200
+    elif "/table.js" == path:
+        return open("static/js/table.js").read(), "text/javascript",200
     else:
         return open("static/html/404.html").read(), "text/html",404
     pass

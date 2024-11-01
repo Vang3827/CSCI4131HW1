@@ -6,23 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/main.css">
   <title>Auto Auction</title>
-  <script defer>
-    document.addEventListener("DOMContentLoaded", () => {
-      console.log("In JS script");
-
-      let btn = document.getElementById("btnButton");
-      let showhideForm = document.getElementById("bidInput")
-      showhideForm.style.display = "none";
-
-      btn.addEventListener("click", () =>{
-        if(showhideForm.style.display === "block"){
-          showhideForm.style.display = "none";
-        }else{
-          showhideForm.style.display = "block";
-        }
-      })
-
-    });
+  <script defer src="/bid.js">
   </script>
 </head>
 
