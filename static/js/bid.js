@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("In JS script");
+    console.log("In bid.js script");
 
     let btn = document.getElementById("btnButton");
     let showhideForm = document.getElementById("bidInput")

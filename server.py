@@ -1,7 +1,17 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import urllib
+import urllib  # Only for parse.unquote and parse.unquote_plus.
+import json
+import base64
+from typing import Union, Optional
+import re
+import datetime
+import time
+# If you need to add anything above here you should check with course staff first.
 
-# PUT YOUR GLOBAL VARIABLES AND HELPER FUNCTIONS HERE.
+# Provided helper function. This function can help you implement rate limiting
+rate_limit_store = []
+
+# My global variables here 
 numericID = 0
 bidnumericID = 0
 listingBool = False
@@ -28,6 +38,7 @@ listings = [
 newListing =[]
 bids =[]
 
+# My helper functions
 def postFunc(body):
     # TODO: Need to Max current numeric ID and add 1
     global numericID
@@ -39,10 +50,10 @@ def postFunc(body):
         newParams["numeric ID"] = numericID
         newListing.append(newParams)
         print(newListing)
-        return open("static/html/create_success.html").read(), "text/html",200
+        return open("static/html/create_success.html").read(),200,{"Content-Type": "text/html"}
     else:
         print("In false postFunch listingBool is--->",listingBool)
-        return open("static/html/create_fail.html").read(),"text/html",400
+        return open("static/html/create_fail.html").read(),404,{"Content-Type": "text/html"}
 
 def postBidFunc(body):
     # TODO: Need to Max current numeric ID and add 1
@@ -53,10 +64,10 @@ def postBidFunc(body):
     if bidBool == True:
         bids.append(newParams)
         print(bids)
-        return open("static/html/create_success.html").read(), "text/html",200
+        return open("static/html/create_success.html").read(),200,{"Content-Type": "text/html"}
     else:
         print("In false postFunch listingBool is--->",bidBool)
-        return open("static/html/create_fail.html").read(),"text/html",400
+        return open("static/html/create_fail.html").read(),404,{"Content-Type": "text/html"}
         
 
 def add_new_listing(params):
@@ -101,48 +112,6 @@ def checkListDict (query,category):
             vehicleList.append(listings[i])
     print(vehicleList)
     return vehicleList
-
-def escape_html(str):
-    str = str.replace("&", "&amp;")
-    str = str.replace('"', "&quot;")
-
-    # you need more.
-
-    return str
-
-
-def unescape_url(url_str):
-    import urllib.parse
-
-    # NOTE -- this is the only place urllib is allowed on this assignment.
-    return urllib.parse.unquote_plus(url_str)
-
-def parse_query_parameters(response):
-    newStrList=[]
-
-    # Split the query string into key-value pairs
-    # key, *val =response.split("&")
-    keyValPairs = response.split("&")
-    # Initialize a dictionary to store parsed parameters
-    urlDict = dict()
-    # Iterate over each key-value pair
-    # Split the pair by '=' to separate key and value
-    for i in keyValPairs:
-        newKV = i.split("=")
-        
-        for j in range(len(newKV)-1):
-            newKV[j] = newKV[j].replace("?","")
-            newKV[j] = newKV[j].replace("%","#")
-            newKV[j] = newKV[j].replace("+"," ")
-            newKV[j+1] = newKV[j+1].replace("?","")
-            newKV[j+1] = newKV[j+1].replace("%","#")
-            newKV[j+1] = newKV[j+1].replace("+"," ")
-            newStrList.append((newKV[j], newKV[j+1]))
-        
-    urlDict=dict(newStrList)
-    # print(urlDict)
-    return urlDict
-
 def render_listing(listing):
     # print("in render listing")
     listing_id = path[9:]
@@ -155,9 +124,9 @@ def render_listing(listing):
                 newPath = (dicts["url"])
                 return newPath
     except ValueError:
-        return "static/html/404.html","text/html",404
+        return "static/html/404.html",404,{"Content-Type": "text/html"}
     
-    return "static/html/404.html","text/html",404
+    return "static/html/404.html",404,{"Content-Type": "text/html"}
 
 def render_gallery(query, category):
     print(type(query),query,type(category),category)
@@ -175,9 +144,6 @@ def render_gallery(query, category):
         cat.append(galleryList[i].get("category"))
         numOfBids.append(galleryList[i].get("bids"))
         date.append(galleryList[i].get("Date"))
-
-
-
 
     return f"""
     <!DOCTYPE html>
@@ -221,145 +187,284 @@ def render_gallery(query, category):
         </table>
     </body>
     </html>
-    ""","text/html",200
+    """,200,{"Content-Type": "text/html"}
 
-def server_GET(url: str) -> tuple[str | bytes, str, int]:
+
+def pass_api_rate_limit() -> tuple[bool, int | None]:
+    """This function will keep track of rate limiting for you.
+    Call it once per request, it will return how much delay would be needed.
+    If it returns 0 then process the request as normal
+    Otherwise if it returns a positive value, that's the number of seconds
+    that need to pass before the next request"""
+    from datetime import datetime, timedelta
+
+    global rate_limit_store
+    # you may find it useful to change these for testing, such as 1 request for 3 seconds.s
+    RATE_LIMIT = 4  # requests per second
+    RATE_LIMIT_WINDOW = 10  # seconds
+    # Refresh rate_limit_store to only "recent" times
+    rate_limit_store = [
+        time
+        for time in rate_limit_store
+        if datetime.now() - time <= timedelta(seconds=RATE_LIMIT_WINDOW)
+    ]
+    if len(rate_limit_store) >= RATE_LIMIT:
+        return (
+            RATE_LIMIT_WINDOW - (datetime.now() - rate_limit_store[0]).total_seconds()
+        )
+    else:
+        # Add current time to rate_limit_store
+        rate_limit_store.append(datetime.now())
+        return 0
+
+
+def escape_html(str):
+    # this i s a bare minimum for hack-prevention.
+    # You might want more.
+    str = str.replace("&", "&amp;")
+    str = str.replace('"', "&quot;")
+    str = str.replace("<", "&lt;")
+    str = str.replace(">", "&gt;")
+    str = str.replace("'", "&#39;")
+    return str
+
+
+def unescape_url(url_str):
+    import urllib.parse
+
+    # NOTE -- this is the only place urllib is allowed on this assignment.
+    return urllib.parse.unquote_plus(url_str)
+
+
+def parse_query_parameters(response):
+    print("This is our initial response ", response)
+    parseResponse =[]
+    charPlacement =""
+
+    for char in response:
+        if char == '&':
+            # Only add '&' if it's not the same as the previous character
+            if charPlacement != '&':
+                parseResponse.append('&')
+        elif char == '=':
+            # Only add '=' if it's not the same as the previous character
+            if charPlacement != '=':
+                parseResponse.append('=')
+        else:
+            # For all other characters, just append them
+            parseResponse.append(char)
+        
+        # Update prev_char to the current character
+        charPlacement = char
+    parseResponse = "".join(parseResponse)
+    print("New response: ",parseResponse)
+
+    pairs = parseResponse.split("&")
+    print("This is the .split pairs ", pairs)
+
+
+    parsed_params = {}
+    print(pairs)
+
+    for pair in pairs:
+        key = unescape_url(pair.split("=")[0])
+        print("this is the key ",key)
+        value = unescape_url(pair.split("=")[1])
+        print("This is the value ",value)
+        parsed_params[key] = value
+        print(parsed_params)
+
+    return parsed_params
+
+
+def typeset_dollars(number):
+    return f"${number:.2f}"
+
+
+# The method signature is a bit "hairy", but don't stress it -- just check the documentation below.
+# NOTE some people's computers don't like the type hints. If so replace below with simply: `def server(method, url, body, headers)`
+# The type hints are fully optional in python.
+def server(
+    request_method: str,
+    url: str,
+    request_body: Optional[str],
+    request_headers: dict[str, str],
+) -> tuple[Union[str, bytes], int, dict[str, str]]:
     """
-    url is a *PARTIAL* URL. If the browser requests `http://localhost:4131/contact?name=joe`
-    then the `url` parameter will have the value "/contact?name=joe". (so the schema and
-    authority will not be included, but the full path, any query, and any anchor will be included)
+    `method` will be the HTTP method used, for our server that's GET, POST, DELETE, and maybe PUT
+    `url` is the partial url, just like seen in previous assignments
+    `body` will either be the python special `None` (if the body wouldn't be sent (such as in a GET request))
+         or the body will be a string-parsed version of what data was sent.
+    headers will be a python dictionary containing all sent headers.
 
-    This function is called each time another program/computer makes a request to this website.
-    The URL represents the requested file.
-
-    This function should return three values (string or bytes, string, int) in a list or tuple. The first is the content to return
-    The second is the content-type. The third is the HTTP Status Code for the response
+    This function returns 3 things:
+    The response body (a string containing text, or binary data)
+    The response code (200 = ok, 404=not found, etc.)
+    A _dictionary_ of headers. This should always contain Content-Type as seen in the example below.
     """
-    # YOUR CODE GOES HERE!
+    # feel free to delete anything below this, so long as the function behaves right it's cool.
+    # That said, I figured we could give you some starter code...
+
+    response_body = None
+    status = 200
+    response_headers = {}
     global path
     print(url)
     path = url.split("?")[0]
-
     
-    # print(path)
-
-    if path in "/" or path in "/main":
-        return open("static/html/mainpage.html").read(), "text/html",200
-    elif "/gallery" in path:
-        if "?" in url:
-            print(url)
-            query = url.split("?")[1]
-            print(query)
-            return render_gallery(parse_query_parameters(query).get("query"),parse_query_parameters(query).get("category"))
+    if request_method == "GET":
+        if path in "/" or path in "/main":
+            return open("static/html/mainpage.html").read(),200,{"Content-Type": "text/html"}
+        elif "/gallery" in path:
+            if "?" in url:
+                print(url)
+                query = url.split("?")[1]
+                print(query)
+                return render_gallery(parse_query_parameters(query).get("query"),parse_query_parameters(query).get("category"))
+            else:
+                return open("static/html/listings.html").read(),200,{"Content-Type": "text/html"}
+        elif "/listing" in path:
+            newPath = render_listing(listings)
+            return open(newPath).read(),200,{"Content-Type": "text/html"}
+        elif "/create" == path:
+            return open("static/html/create.html").read(),200,{"Content-Type": "text/html"}
+        elif "/main.css" == path:
+            return open("static/css/main.css").read(),200,{"Content-Type": "text/css"}
+        # elif "/new_listing" == path:
+        #     return open("static/js/new_listing.js").read(),200,{"Content-Type": "text/javascript"}
+        elif "/bid.js" == path:
+            return open("static/js/bid.js").read(),200,{"Content-Type": "text/javascript"}
+        elif "/new_listing.js"== path:
+            return open("static/js/new_listing.js").read(),200,{"Content-Type": "text/javascript"}
+        elif "/table.js" == path:
+            return open("static/js/table.js").read(),200,{"Content-Type": "text/javascript"}
         else:
-            return open("static/html/listings.html").read(), "text/html",200
-    elif "/listing" in path:
-        newPath = render_listing(listings)
-        return open(newPath).read(), "text/html",200
-    elif "/create" == path:
-        return open("static/html/create.html").read(), "text/html",200
-    elif "/main.css" == path:
-        return open("static/css/main.css").read(), "text/css",200
-    elif "/new_listing" == path:
-        return open("static/js/new_listing.js").read(), "text/javascript",200
-    elif "/bid.js":
-        return open("static/js/bid.js").read(), "text/javascript",200
-    elif "/new_listing.js":
-        return open("static/js/new_listing.js").read(), "text/javascript",200
-    elif "/table.js" == path:
-        return open("static/js/table.js").read(), "text/javascript",200
-    else:
-        return open("static/html/404.html").read(), "text/html",404
-    pass
+            return open("static/html/404.html").read(),404,{"Content-Type": "text/html"} 
+    elif request_method == "POST": 
+        if path == "/create":
+            return postFunc(request_body)
+        elif path =="/api/place_bid":
+            return postBidFunc(request_body)
+        else:
+            return open("static/html/create_fail.html").read(),404,{"Content-Type": "text/html"}
+    
+    # Parse URL -- this is probably the best way to do it. Delete if you want.
+    parameters = None
+    if "?" in url:
+        url, parameters = url.split("?", 1)
+
+    # To help you get rolling... the 404 page will probably look like this.
+    # Notice how we have to be explicit that "text/html" should be the value for
+    # header: "Content-Type" now instead of being returned directly.
+    # I am sorry that you're going to have to do a bunch of boring refactoring.
+    response_body = open("static/html/404.html").read()
+    status = 404
+    response_headers["Content-Type"] = "text/html; charset=utf-8"
 
 
-def server_POST(url: str, body: str) -> tuple[str | bytes, str, int]:
-    """
-    url is a *PARTIAL* URL. If the browser requests `http://localhost:4131/contact?name=joe`
-    then the `url` parameter will have the value "/contact?name=joe". (so the schema and
-    authority will not be included, but the full path, any query, and any anchor will be included)
 
-    This function is called each time another program/computer makes a POST request to this website.
 
-    This function should return three values (string or bytes, string, int) in a list or tuple. The first is the content to return
-    The second is the content-type. The third is the HTTP Status Code for the response
-    """
-    # return url,"",201
-    if url == "/create":
-        print("In server_POST")
-        print("URL-->",url)
-        print("body-->",body)
-        print("body type --->",type(body))
 
-        
-        return postFunc(body)
-    elif url =="/place_bid":
-        print("In server_POST")
-        print("URL-->",url)
-        print("body-->",body)
-        print("body type --->",type(body))
-        return postBidFunc(body)
-    else:
-        return open("static/html/create_fail.html").read(),body,400
+    return response_body, status, response_headers
 
-    pass
 
 
 # You shouldn't need to change content below this. It would be best if you just left it alone.
 
 
 class RequestHandler(BaseHTTPRequestHandler):
-    def do_POST(self):
+    def c_read_body(self):
         # Read the content-length header sent by the BROWSER
         content_length = int(self.headers.get("Content-Length", 0))
         # read the data being uploaded by the BROWSER
         body = self.rfile.read(content_length)
         # we're making some assumptions here -- but decode to a string.
         body = str(body, encoding="utf-8")
+        return body
 
-        message, content_type, response_code = server_POST(self.path, body)
-
+    def c_send_response(self, message, response_code, headers):
         # Convert the return value into a byte string for network transmission
         if type(message) == str:
             message = bytes(message, "utf8")
 
-        # prepare the response object with minimal viable headers.
+        # Send the first line of response.
         self.protocol_version = "HTTP/1.1"
-        # Send response code
         self.send_response(response_code)
-        # Send headers
-        # Note -- this would be binary length, not string length
+
+        # Send headers (plus a few we'll handle for you)
+        for key, value in headers.items():
+            self.send_header(key, value)
         self.send_header("Content-Length", len(message))
-        self.send_header("Content-Type", content_type)
         self.send_header("X-Content-Type-Options", "nosniff")
         self.end_headers()
 
         # Send the file.
         self.wfile.write(message)
-        return
+
+    def do_POST(self):
+        # Step 1: read the last bit of the request
+        try:
+            body = self.c_read_body()
+        except Exception as error:
+            # Can't read it -- that's the client's fault 400
+            self.c_send_response(
+                "Couldn't read body as text", 400, {"Content-Type": "text/plain"}
+            )
+            raise
+
+        try:
+            # Step 2: handle it.
+            message, response_code, headers = server(
+                "POST", self.path, body, self.headers
+            )
+            # Step 3: send the response
+            self.c_send_response(message, response_code, headers)
+        except Exception as error:
+            # If your code crashes -- that's our fault 500
+            self.c_send_response(
+                "The server function crashed.", 500, {"Content-Type": "text/plain"}
+            )
+            raise
 
     def do_GET(self):
-        # Call the student-edited server code.
-        message, content_type, response_code = server_GET(self.path)
+        try:
+            # Step 1: handle it.
+            message, response_code, headers = server(
+                "GET", self.path, None, self.headers
+            )
+            # Step 3: send the response
+            self.c_send_response(message, response_code, headers)
+        except Exception as error:
+            # If your code crashes -- that's our fault 500
+            self.c_send_response(
+                "The server function crashed.", 500, {"Content-Type": "text/plain"}
+            )
+            raise
 
-        # Convert the return value into a byte string for network transmission
-        if type(message) == str:
-            message = bytes(message, "utf8")
+    def do_DELETE(self):
+        # Step 1: read the last bit of the request
+        try:
+            body = self.c_read_body()
+        except Exception as error:
+            # Can't read it -- that's the client's fault 400
+            self.c_send_response(
+                "Couldn't read body as text", 400, {"Content-Type": "text/plain"}
+            )
+            raise
 
-        # prepare the response object with minimal viable headers.
-        self.protocol_version = "HTTP/1.1"
-        # Send response code
-        self.send_response(response_code)
-        # Send headers
-        # Note -- this would be binary length, not string length
-        self.send_header("Content-Length", len(message))
-        self.send_header("Content-Type", content_type)
-        self.send_header("X-Content-Type-Options", "nosniff")
-        self.end_headers()
-
-        # Send the file.
-        self.wfile.write(message)
-        return
+        try:
+            # Step 2: handle it.
+            message, response_code, headers = server(
+                "DELETE", self.path, body, self.headers
+            )
+            # Step 3: send the response
+            self.c_send_response(message, response_code, headers)
+        except Exception as error:
+            # If your code crashes -- that's our fault 500
+            self.c_send_response(
+                "The server function crashed.", 500, {"Content-Type": "text/plain"}
+            )
+            raise
 
 
 def run():
@@ -371,3 +476,4 @@ def run():
 
 
 run()
+

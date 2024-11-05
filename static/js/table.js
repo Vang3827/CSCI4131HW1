@@ -1,5 +1,7 @@
 window.addEventListener("DOMContentLoaded", () => {
 
+    console.log("In table.js script");
+
     let count = new Date("Oct 25, 2024 15:37:25").getTime();
     let countTwo = new Date("Oct 30, 2024 15:37:25").getTime();
     let countTre = new Date("Nov 15, 2024 15:37:25").getTime();
@@ -43,43 +45,6 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }, 1000);
 
-
-    // const element = document.getElementById("imgData")
-
-    // const boxes = document.querySelectorAll("#imgData");
-    // console.log(boxes)
-
-    // boxes.forEach((e) => {
-    //     const imgNode = document.createElement("img")
-
-    //     e.addEventListener("mouseover", (event) => {
-    //         // const elementData = myElement.dataset.image; // Accessing custom data
-
-    //         let imgData = document.getElementById("imgData");
-    //         // const src = imgData.dataset.image
-    //         // let dataimage = "https://images.unsplash.com/photo-1632686341369-8a7991237930?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    //         // console.log(dataimage)
-
-    //         const dataimage = imgData.dataset.image
-    //         console.log(dataimage)
-    //         imgNode.src = dataimage
-    //         imgNode.alt = "image Preview here"
-    //         imgNode.width = 400;
-    //         imgNode.height = 300;
-    //         imgNode.id = "newNode"
-    //         const element = document.getElementById("imgPreview");
-
-    //         element.appendChild(imgNode);
-    //     });
-    //     e.addEventListener("mouseout", (event) => {
-    //         // const elementData = myElement.dataset.image; // Accessing custom data
-
-    //         // document.getElementById("imgPreview").style.display = "none";
-    //         const removeele = document.getElementById("newNode");
-    //         removeele.remove()
-    //     });
-
-    // })
 
 
     document.getElementById('imgData1').addEventListener('mouseover', function () {
@@ -150,7 +115,7 @@ window.addEventListener("DOMContentLoaded", () => {
     // Optionally reset the image when mouse leaves the text
     document.querySelectorAll('.hover-text').forEach(text => {
         text.addEventListener('mouseleave', function () {
-            image.src = 'default.jpg'; // Change to your default image path
+            image.src = 'default.jpg'; 
         });
     });
 
