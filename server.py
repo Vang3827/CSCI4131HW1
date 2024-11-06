@@ -36,39 +36,53 @@ listings = [
          ]}
 ]
 newListing =[]
-bids =[]
+bids =[{"id": 0, "name": "", "amount": "0"}]
+message_list = [
+    {"id": 1, "author": "system", "message": "test message one"},
+    {"id": 2, "author": "system", "message": "test message two"},
+]
 
 # My helper functions
-def postFunc(body):
-    # TODO: Need to Max current numeric ID and add 1
-    global numericID
-    newParams = parse_query_parameters(body)
-    add_new_listing(newParams)
+# def postFunc(body):
+#     # TODO: Need to Max current numeric ID and add 1
+#     global numericID
+#     newParams = parse_query_parameters(body)
+#     add_new_listing(newParams)
     
-    if listingBool == True:
-        numericID += 1
-        newParams["numeric ID"] = numericID
-        newListing.append(newParams)
-        print(newListing)
-        return open("static/html/create_success.html").read(),200,{"Content-Type": "text/html"}
-    else:
-        print("In false postFunch listingBool is--->",listingBool)
-        return open("static/html/create_fail.html").read(),404,{"Content-Type": "text/html"}
+#     if listingBool == True:
+#         numericID += 1
+#         newParams["numeric ID"] = numericID
+#         newListing.append(newParams)
+#         print(newListing)
+#         return open("static/html/create_success.html").read(),200,{"Content-Type": "text/html"}
+#     else:
+#         print("In false postFunch listingBool is--->",listingBool)
+#         return open("static/html/create_fail.html").read(),404,{"Content-Type": "text/html"}
 
-def postBidFunc(body):
-    # TODO: Need to Max current numeric ID and add 1
-    global bidnumericID
-    newParams = parse_query_parameters(body)
-    add_new_bid(newParams)
+# def postBidFunc(body):
+#     # TODO: Need to Max current numeric ID and add 1
+#     global bidnumericID
+#     newParams = parse_query_parameters(body)
+#     add_new_bid(newParams)
     
-    if bidBool == True:
-        bids.append(newParams)
-        print(bids)
-        return open("static/html/create_success.html").read(),200,{"Content-Type": "text/html"}
-    else:
-        print("In false postFunch listingBool is--->",bidBool)
-        return open("static/html/create_fail.html").read(),404,{"Content-Type": "text/html"}
+#     if bidBool == True:
+#         bids.append(newParams)
+#         print(bids)
+#         return open("static/html/create_success.html").read(),200,{"Content-Type": "text/html"}
+#     else:
+#         print("In false postFunch listingBool is--->",bidBool)
+#         return open("static/html/create_fail.html").read(),404,{"Content-Type": "text/html"}
         
+def postAPI(body,contentType):
+    print("In postAPI func")
+    print(body,contentType)
+
+    if len(body) == 0:
+        return 400
+    else:
+        newBody = json.loads(body)
+        print(newBody)
+    
 
 def add_new_listing(params):
     global listingBool
@@ -304,7 +318,7 @@ def server(
     """
     # feel free to delete anything below this, so long as the function behaves right it's cool.
     # That said, I figured we could give you some starter code...
-
+    global bids
     response_body = None
     status = 200
     response_headers = {}
@@ -342,9 +356,44 @@ def server(
             return open("static/html/404.html").read(),404,{"Content-Type": "text/html"} 
     elif request_method == "POST": 
         if path == "/create":
+            # If request_body is empty, or request_header for content type is missing OR does not indicate that json content was sent  (application/json) then an error 400 should be returned.
+            #body does not matter in this case and can be empty
             return postFunc(request_body)
         elif path =="/api/place_bid":
-            return postBidFunc(request_body)
+            if request_headers.get("Content-Type", "") != "application/json":
+                # checking if the headers look right.
+                response_body = json.dumps({"message": "invalid or missing content type!"})
+                status = 400
+                response_headers["Content-Type"] = "application/json"
+            else:
+                try:
+                    # attempt parsing and processing. Errors here should be caused by bad json, and treated as such.
+                    request_body = json.loads(request_body)
+                    # I'm being super-paranoid here -- forcing whatever is input to be a string even if it wasn't originally.
+                    name = str(request_body.get("yourName", ""))
+                    amount = str(request_body.get("Amount",""))
+                    comments = str(request_body.get("comments", ""))
+                    if len(name) == 0 or len(amount) == 0:
+                        response_body = json.dumps(
+                            {"mising body"}
+                        )
+                        status = 400
+                        response_headers["Content-Type"] = "application/json"
+                    else:
+                        next_id = 1 + max(bid["id"] for bid in bids)
+                        bids.append(
+                            {"name": name, "amount": amount, "id": next_id, "comments":comments}
+                        )
+                        response_body = json.dumps({"message": "ok"})
+                        status = 200
+                        response_headers["Content-Type"] = "application/json"
+                except Exception as e:
+                    print(e)
+                    response_body = json.dumps(
+                        {"message": "body could not be parsed as json!"}
+                    )
+                    status = 400
+                    response_headers["Content-Type"] = "application/json"
         else:
             return open("static/html/create_fail.html").read(),404,{"Content-Type": "text/html"}
     
