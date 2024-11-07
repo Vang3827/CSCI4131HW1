@@ -355,45 +355,46 @@ def server(
         else:
             return open("static/html/404.html").read(),404,{"Content-Type": "text/html"} 
     elif request_method == "POST": 
-        if path == "/create":
+        # if path == "/create":
             # If request_body is empty, or request_header for content type is missing OR does not indicate that json content was sent  (application/json) then an error 400 should be returned.
             #body does not matter in this case and can be empty
-            return postFunc(request_body)
-        elif path =="/api/place_bid":
-            if request_headers.get("Content-Type", "") != "application/json":
-                # checking if the headers look right.
-                response_body = json.dumps({"message": "invalid or missing content type!"})
-                status = 400
-                response_headers["Content-Type"] = "application/json"
-            else:
-                try:
-                    # attempt parsing and processing. Errors here should be caused by bad json, and treated as such.
-                    request_body = json.loads(request_body)
-                    # I'm being super-paranoid here -- forcing whatever is input to be a string even if it wasn't originally.
-                    name = str(request_body.get("yourName", ""))
-                    amount = str(request_body.get("Amount",""))
-                    comments = str(request_body.get("comments", ""))
-                    if len(name) == 0 or len(amount) == 0:
-                        response_body = json.dumps(
-                            {"mising body"}
-                        )
-                        status = 400
-                        response_headers["Content-Type"] = "application/json"
-                    else:
-                        next_id = 1 + max(bid["id"] for bid in bids)
-                        bids.append(
-                            {"name": name, "amount": amount, "id": next_id, "comments":comments}
-                        )
-                        response_body = json.dumps({"message": "ok"})
-                        status = 200
-                        response_headers["Content-Type"] = "application/json"
-                except Exception as e:
-                    print(e)
-                    response_body = json.dumps(
-                        {"message": "body could not be parsed as json!"}
-                    )
-                    status = 400
-                    response_headers["Content-Type"] = "application/json"
+            # return postFunc(request_body)
+        if path =="/api/place_bid":
+            # if request_headers.get("Content-Type", "") != "application/json":
+            #     # checking if the headers look right.
+            #     response_body = json.dumps({"message": "invalid or missing content type!"})
+            #     status = 400
+            #     response_headers["Content-Type"] = "application/json"
+            # else:
+            #     try:
+            #         # attempt parsing and processing. Errors here should be caused by bad json, and treated as such.
+            #         request_body = json.loads(request_body)
+            #         # I'm being super-paranoid here -- forcing whatever is input to be a string even if it wasn't originally.
+            #         name = str(request_body.get("name", ""))
+            #         amount = str(request_body.get("amount",""))
+            #         comments = str(request_body.get("comments", ""))
+            #         if len(name) == 0 or len(amount) == 0:
+            #             response_body = json.dumps(
+            #                 {"mising body"}
+            #             )
+            #             status = 400
+            #             response_headers["Content-Type"] = "application/json"
+            #         else:
+            #             next_id = 1 + max(bid["id"] for bid in bids)
+            #             bids.append(
+            #                 {"name": name, "amount": amount, "id": next_id, "comments":comments}
+            #             )
+            #             response_body = json.dumps({"message": "ok"})
+            #             status = 200
+            #             response_headers["Content-Type"] = "application/json"
+            #     except Exception as e:
+            #         print(e)
+            #         response_body = json.dumps(
+            #             {"message": "body could not be parsed as json!"}
+            #         )
+            #         status = 400
+            #         response_headers["Content-Type"] = "application/json"
+            print("In /api/place_bid POST")
         else:
             return open("static/html/create_fail.html").read(),404,{"Content-Type": "text/html"}
     
