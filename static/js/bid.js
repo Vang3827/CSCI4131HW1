@@ -31,15 +31,15 @@ document.addEventListener("DOMContentLoaded", () => {
         url = '/api/place_bid';
         const response = await fetch(url, {
           method: 'POST',
+          body: JSON.stringify({name:nameVal, amount:amountVal,comments:commentsVal}),
           headers: {
             'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({name:nameVal, amount:amountVal,comments:commentsVal}) 
+          } 
         });
         const data = await response.json();
         console.log(data);
 
-        return console.log(data); 
+        return data; 
       } catch(error){
         console.log(error)
       }

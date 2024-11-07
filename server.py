@@ -360,6 +360,8 @@ def server(
             #body does not matter in this case and can be empty
             # return postFunc(request_body)
         if path =="/api/place_bid":
+            print(response_body)
+            print("In /api/place_bid POST")
             # if request_headers.get("Content-Type", "") != "application/json":
             #     # checking if the headers look right.
             #     response_body = json.dumps({"message": "invalid or missing content type!"})
@@ -394,7 +396,6 @@ def server(
             #         )
             #         status = 400
             #         response_headers["Content-Type"] = "application/json"
-            print("In /api/place_bid POST")
         else:
             return open("static/html/create_fail.html").read(),404,{"Content-Type": "text/html"}
     
