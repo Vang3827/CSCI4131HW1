@@ -22,27 +22,23 @@ document.addEventListener("DOMContentLoaded", () => {
     // }
 
     async function postapi() {
-    
-      try{
+
         nameVal = name_input.value;
         amountVal = amount_input.value;
         commentsVal = comments_input.value;
         console.log("Before fetch ",JSON.stringify({name:nameVal, amount:amountVal,comments:commentsVal}));
+        console.log(typeof(nameVal),nameVal)
         url = '/api/place_bid';
         const response = await fetch(url, {
           method: 'POST',
-          body: JSON.stringify({name:nameVal, amount:amountVal,comments:commentsVal}),
+          body: JSON.stringify({name:nameVal,amount:amountVal,comments:commentsVal}),
           headers: {
             'Content-Type': 'application/json'
           } 
         });
-        const data = await response.json();
-        console.log(data);
-
-        return data; 
-      } catch(error){
-        console.log(error)
-      }
+        // const data = await response.json();
+        // console.log(data);; 
+      
       }
     
     // postData('/api/place_bid', { answer: 42 })
@@ -64,8 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     formInput.addEventListener("submit",(event)=>{
-      event.preventDefault();
       postapi()
+      event.preventDefault();
       // const inputData = new FormData(formInput);
       // const data = JSON.loads(inputData);
 
