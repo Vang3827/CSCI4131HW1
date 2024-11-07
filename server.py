@@ -41,37 +41,6 @@ message_list = [
     {"id": 1, "author": "system", "message": "test message one"},
     {"id": 2, "author": "system", "message": "test message two"},
 ]
-
-# My helper functions
-# def postFunc(body):
-#     # TODO: Need to Max current numeric ID and add 1
-#     global numericID
-#     newParams = parse_query_parameters(body)
-#     add_new_listing(newParams)
-    
-#     if listingBool == True:
-#         numericID += 1
-#         newParams["numeric ID"] = numericID
-#         newListing.append(newParams)
-#         print(newListing)
-#         return open("static/html/create_success.html").read(),200,{"Content-Type": "text/html"}
-#     else:
-#         print("In false postFunch listingBool is--->",listingBool)
-#         return open("static/html/create_fail.html").read(),404,{"Content-Type": "text/html"}
-
-# def postBidFunc(body):
-#     # TODO: Need to Max current numeric ID and add 1
-#     global bidnumericID
-#     newParams = parse_query_parameters(body)
-#     add_new_bid(newParams)
-    
-#     if bidBool == True:
-#         bids.append(newParams)
-#         print(bids)
-#         return open("static/html/create_success.html").read(),200,{"Content-Type": "text/html"}
-#     else:
-#         print("In false postFunch listingBool is--->",bidBool)
-#         return open("static/html/create_fail.html").read(),404,{"Content-Type": "text/html"}
         
 def postAPI(body,contentType):
     print("In postAPI func")
@@ -360,7 +329,6 @@ def server(
             #body does not matter in this case and can be empty
             # return postFunc(request_body)
         if path =="/api/place_bid":
-            print(response_body)
             print("In /api/place_bid POST")
             # if request_headers.get("Content-Type", "") != "application/json":
             #     # checking if the headers look right.
