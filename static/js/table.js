@@ -61,14 +61,14 @@ window.addEventListener("DOMContentLoaded", () => {
         element.appendChild(imgNode);
     });
     document.getElementById('imgData1').addEventListener("mouseout", (event) => {
-            // const elementData = myElement.dataset.image; // Accessing custom data
+        // const elementData = myElement.dataset.image; // Accessing custom data
 
-            // document.getElementById("imgPreview").style.display = "none";
-            const removeele = document.getElementById("newNode");
-            removeele.remove()
-        });
-    
-        document.getElementById('imgData2').addEventListener('mouseover', function () {
+        // document.getElementById("imgPreview").style.display = "none";
+        const removeele = document.getElementById("newNode");
+        removeele.remove()
+    });
+
+    document.getElementById('imgData2').addEventListener('mouseover', function () {
         const imgNode = document.createElement("img")
         let imgData = document.getElementById("imgData2");
         const dataimage = imgData.dataset.image
@@ -82,14 +82,14 @@ window.addEventListener("DOMContentLoaded", () => {
         element.appendChild(imgNode);
     });
     document.getElementById('imgData2').addEventListener("mouseout", (event) => {
-            // const elementData = myElement.dataset.image; // Accessing custom data
+        // const elementData = myElement.dataset.image; // Accessing custom data
 
-            // document.getElementById("imgPreview").style.display = "none";
-            const removeele = document.getElementById("newNode");
-            removeele.remove()
-        });
+        // document.getElementById("imgPreview").style.display = "none";
+        const removeele = document.getElementById("newNode");
+        removeele.remove()
+    });
 
-        document.getElementById('imgData3').addEventListener('mouseover', function () {
+    document.getElementById('imgData3').addEventListener('mouseover', function () {
         const imgNode = document.createElement("img")
         let imgData = document.getElementById("imgData3");
         const dataimage = imgData.dataset.image
@@ -103,21 +103,66 @@ window.addEventListener("DOMContentLoaded", () => {
         element.appendChild(imgNode);
     });
     document.getElementById('imgData3').addEventListener("mouseout", (event) => {
-            // const elementData = myElement.dataset.image; // Accessing custom data
+        // const elementData = myElement.dataset.image; // Accessing custom data
 
-            // document.getElementById("imgPreview").style.display = "none";
-            const removeele = document.getElementById("newNode");
-            removeele.remove()
-        });
+        // document.getElementById("imgPreview").style.display = "none";
+        const removeele = document.getElementById("newNode");
+        removeele.remove()
+    });
 
 
 
     // Optionally reset the image when mouse leaves the text
     document.querySelectorAll('.hover-text').forEach(text => {
         text.addEventListener('mouseleave', function () {
-            image.src = 'default.jpg'; 
+            image.src = 'default.jpg';
         });
     });
+
+    async function deleteapi() {
+        btnId = document.getElementById("tableRow").value
+        console.log("DELETE! this one --> ",btnId)
+
+        let url = "/api/delete_listing/"+btnId
+
+        let options = {
+            method: "DELETE"
+        }
+        fetch(url,options)
+        .then(repsonse => console.log(repsonse.status))
+        
+
+    }
+
+
+    const deleteBtn = document.querySelectorAll("#delete");
+
+    // deleteBtn.addEventListener("click", (event) => {
+    //     event.preventDefault();
+    //     deleteapi()
+    // })
+
+    // Add an event listener to each button
+    // deleteBtn.forEach(button => {
+    //     button.addEventListener('click', buttons
+    //     // Code to execute when the button is clicked
+    //     // console.log('Delete Button clicked!'); 
+    //     // deleteapi();
+    //   );
+    // });
+
+    // function buttons() {
+    //     console.log('Delete Button clicked!'); 
+    //     deleteapi();
+    // };
+
+
+    document.addEventListener("click", e => {
+        if (e.target.matches("#delete"))
+            console.log("clicked");
+            deleteapi();
+    })
+
 
 
 });

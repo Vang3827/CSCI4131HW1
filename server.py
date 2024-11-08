@@ -324,46 +324,51 @@ def server(
         else:
             return open("static/html/404.html").read(),404,{"Content-Type": "text/html"} 
     elif request_method == "POST": 
-        # if path == "/create":
-            # If request_body is empty, or request_header for content type is missing OR does not indicate that json content was sent  (application/json) then an error 400 should be returned.
-            #body does not matter in this case and can be empty
-            # return postFunc(request_body)
         if path =="/api/place_bid":
             print("In /api/place_bid POST")
-            # if request_headers.get("Content-Type", "") != "application/json":
-            #     # checking if the headers look right.
-            #     response_body = json.dumps({"message": "invalid or missing content type!"})
-            #     status = 400
-            #     response_headers["Content-Type"] = "application/json"
-            # else:
-            #     try:
-            #         # attempt parsing and processing. Errors here should be caused by bad json, and treated as such.
-            #         request_body = json.loads(request_body)
-            #         # I'm being super-paranoid here -- forcing whatever is input to be a string even if it wasn't originally.
-            #         name = str(request_body.get("name", ""))
-            #         amount = str(request_body.get("amount",""))
-            #         comments = str(request_body.get("comments", ""))
-            #         if len(name) == 0 or len(amount) == 0:
-            #             response_body = json.dumps(
-            #                 {"mising body"}
-            #             )
-            #             status = 400
-            #             response_headers["Content-Type"] = "application/json"
-            #         else:
-            #             next_id = 1 + max(bid["id"] for bid in bids)
-            #             bids.append(
-            #                 {"name": name, "amount": amount, "id": next_id, "comments":comments}
-            #             )
-            #             response_body = json.dumps({"message": "ok"})
-            #             status = 200
-            #             response_headers["Content-Type"] = "application/json"
-            #     except Exception as e:
-            #         print(e)
-            #         response_body = json.dumps(
-            #             {"message": "body could not be parsed as json!"}
-            #         )
-            #         status = 400
-            #         response_headers["Content-Type"] = "application/json"
+            if request_headers.get("Content-Type", "") != "application/json":
+                # checking if the headers look right.
+                response_body = json.dumps({"message": "invalid or missing content type!"})
+                status = 400
+                response_headers["Content-Type"] = "application/json"
+            else:
+                try:
+                    # attempt parsing and processing. Errors here should be caused by bad json, and treated as such.
+                    request_body = json.loads(request_body)
+                    #
+                    print("In else --> try ",request_body)
+                    name = str(request_body.get("bidder_name", ""))
+                    amount = str(request_body.get("bid_amount",""))
+                    comments = str(request_body.get("comment", ""))
+                    bid_Id = str(request_body.get("listing_id", ""))
+                    if len(name) == 0 or len(amount) == 0:
+                        response_body = json.dumps(
+                            {"mising body"}
+                        )
+                        status = 400
+                        response_headers["Content-Type"] = "application/json"
+                    else:
+                        # Come back
+                        # 
+                        print("Else statement In right place ",request_body)
+
+                        next_id = 1 + max(bid["id"] for bid in bids)
+                        bids.append(
+                            {"bidder_name": name, "bid_amount": amount, "id": next_id, "comment":comments, "bid_Id":bid_Id}
+                        )
+                        response_body = json.dumps({"message": "ok"})
+                        status = 200
+                        response_headers["Content-Type"] = "application/json"
+                        print("The bids: ",bids)
+                except Exception as e:
+                    print(e)
+                    response_body = json.dumps(
+                        {"message": "body could not be parsed as json!"}
+                    )
+                    status = 400
+                    response_headers["Content-Type"] = "application/json"
+        elif path == "/api/delete_listing":
+            print("In /api/delete_listing ")
         else:
             return open("static/html/create_fail.html").read(),404,{"Content-Type": "text/html"}
     
@@ -376,10 +381,6 @@ def server(
     # Notice how we have to be explicit that "text/html" should be the value for
     # header: "Content-Type" now instead of being returned directly.
     # I am sorry that you're going to have to do a bunch of boring refactoring.
-    response_body = open("static/html/404.html").read()
-    status = 404
-    response_headers["Content-Type"] = "text/html; charset=utf-8"
-
 
 
 

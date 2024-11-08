@@ -77,9 +77,19 @@ em{
     background-color: burlywood;
 }
 .bidDiv{
+    background-color: gray;
+    padding: 2%;
+    border-radius: 4px;
+    border-style: solid;
+    border-color: black;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
+.top{
+    width: 50%;
+}
+
 table{
     text-align: center;
 }

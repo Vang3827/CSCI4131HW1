@@ -38,7 +38,7 @@
             <input id="btnButton" class="bidButton" type="button" value="Place Bid">
           </div>
           <div>
-            <form id="bidInput">
+            <form id="bidInput" data-id="1">
               <label for="nameinput">Your name:</label>
               <br>
 
@@ -48,24 +48,30 @@
               <label for="amount">Amount</label>
               <br>
 
-              <input type="number" id="amount" name="amount" placeholder="Amount here" min="1,000"><br>
-              <input type="submit" id ="submit" value="Submit">
+              <input type="number" id="amount" name="amount" placeholder="Amount here" min="15000"><br>
+              <input type="submit" id="submit" value="Submit">
 
               <label for="comments">Comments</label>
               <textarea id="comments" name="comments" rows="4" cols="30" placeholder="Comments here"></textarea>
             </form>
           </div>
-          <div class="bidDiv">
-            <p class="bidder">Car_Person</p>
-            <p class="bidAmount">$14,651</p>
-          </div>
-          <div class="bidDiv">
-            <p class="bidder">A_Car</p>
-            <p class="bidAmount">$9,661</p>
-          </div>
-          <div class="bidDiv">
-            <p class="bidder">CarBidder</p>
-            <p class="bidAmount">$4,881</p>
+          <div id = "bidContainer">
+
+            <div class="bidDiv">
+              <p class="top">Car_Person</p>
+              <p class="top">$14,651</p>
+              <p class="bot">Comment here</p>
+            </div>
+            <div class="bidDiv">
+              <p class="top">A_Car</p>
+              <p class="top">$9,661</p>
+              <p class ="bot"></p>
+            </div>
+            <div class="bidDiv">
+              <p class="top">CarBidder</p>
+              <p class="top">$4,881</p>
+              <p class ="bot">First here</p>
+            </div>
           </div>
         </div>
       </div>

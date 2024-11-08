@@ -37,29 +37,34 @@
             <p class="bidword">Bids</p>
             <input id = "btnButton" class="bidButton" type="button" value="Place Bid" />
           </div>
-          <form id="bidInput" action="/api/place_bid" method="post">
-            <label for="name">Your name:</label>
+          <form id="bidInput" data-id="1">
+            <label for="nameinput">Your name:</label>
             <br>
 
-            <input type="text" id="yourName" name="yourName" placeholder="Name here">
+            <input type="text" id="nameinput" name="nameinput" placeholder="Name here">
             <br>
 
-            <label for="amountInput">Amount</label>
+            <label for="amount">Amount</label>
             <br>
 
-            <input type="number" id="Amount" name="Amount" placeholder="Amount here" min="1,000"><br>
-            <input type="submit" value="Submit">
+            <input type="number" id="amount" name="Amount" placeholder="Amount here" min="1,000"><br>
+            <input type="submit" id="submit" value="Submit">
 
             <label for="comments">Comments</label>
             <textarea id="comments" name="comments" rows="4" cols="30" placeholder="Comments here"></textarea>
           </form>
-          <div class="bidDiv">
-            <p class="bidder">yodaMan</p>
-            <p class="bidAmount">$17,551</p>
-          </div>
-          <div class="bidDiv">
-            <p class="bidder">CarGuy</p>
-            <p class="bidAmount">$12,713</p>
+          <div id = "bidContainer">
+            <div class="bidDiv">
+              <p class="top">yodaMan</p>
+              <p class="top">$17,551</p>
+              <p class="bot">I should say something
+
+              </p>
+            </div>
+            <div class="bidDiv">
+              <p class="top">CarGuy</p>
+              <p class="top">$12,713</p>
+            </div>
           </div>
         </div>
       </div>
