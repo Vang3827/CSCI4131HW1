@@ -53,6 +53,45 @@ def postAPI(body,contentType):
         print(newBody)
     
 
+def render_all_gallery():
+
+    listingname = []
+    numOfBids = []
+    cat = []
+    date = []
+
+    print(range(len(listings)))
+
+    for i in range(len(listings)):
+        listingname.append(listings[i].get("vehicle"))
+        cat.append(listings[i].get("category"))
+        numOfBids.append(listings[i].get("bids"))
+        date.append(listings[i].get("Date"))
+        
+        return f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/main.css">
+        <title>Auto Auction</title>
+    </head>
+    <body>
+        <h1>HELLO</h1>
+        <p>TODO: Render ALL LISTING HRE</p>
+        <p>Hint maybe: Use for loop to iterate over listing[]</p>
+        <p>Make table to put all of those listing in</p>
+        <p>Should show under if done correctly</p>
+        <p>{listingname}</p>
+        <p>{numOfBids}</p>
+        <p>{cat}</p>
+        <p>{date}</p>
+    </body>
+    </html>
+    """,200,{"Content-Type": "text/html"}
+
+
 def add_new_listing(params):
     global listingBool
     print("In add_new_listing(params)")
@@ -95,6 +134,7 @@ def checkListDict (query,category):
             vehicleList.append(listings[i])
     print(vehicleList)
     return vehicleList
+
 def render_listing(listing):
     # print("in render listing")
     listing_id = path[9:]
@@ -305,7 +345,7 @@ def server(
                 print(query)
                 return render_gallery(parse_query_parameters(query).get("query"),parse_query_parameters(query).get("category"))
             else:
-                return open("static/html/listings.html").read(),200,{"Content-Type": "text/html"}
+                return render_all_gallery()
         elif "/listing" in path:
             newPath = render_listing(listings)
             return open(newPath).read(),200,{"Content-Type": "text/html"}
