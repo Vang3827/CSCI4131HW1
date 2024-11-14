@@ -51,45 +51,6 @@ def postAPI(body,contentType):
     else:
         newBody = json.loads(body)
         print(newBody)
-    
-
-def render_all_gallery():
-
-    listingname = []
-    numOfBids = []
-    cat = []
-    date = []
-
-    print(range(len(listings)))
-
-    for i in range(len(listings)):
-        listingname.append(listings[i].get("vehicle"))
-        cat.append(listings[i].get("category"))
-        numOfBids.append(listings[i].get("bids"))
-        date.append(listings[i].get("Date"))
-        
-        return f"""
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/main.css">
-        <title>Auto Auction</title>
-    </head>
-    <body>
-        <h1>HELLO</h1>
-        <p>TODO: Render ALL LISTING HRE</p>
-        <p>Hint maybe: Use for loop to iterate over listing[]</p>
-        <p>Make table to put all of those listing in</p>
-        <p>Should show under if done correctly</p>
-        <p>{listingname}</p>
-        <p>{numOfBids}</p>
-        <p>{cat}</p>
-        <p>{date}</p>
-    </body>
-    </html>
-    """,200,{"Content-Type": "text/html"}
 
 
 def add_new_listing(params):
@@ -154,7 +115,35 @@ def render_listing(listing):
 def render_gallery(query, category):
     print(type(query),query,type(category),category)
     
-    galleryList = checkListDict(query,category)
+    if query == "" and category =="":
+        return f"""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" href="/main.css">
+            <title>Auto Auction</title>
+        </head>
+        <body>
+            <form action="gallery" method="get" class="topnav">
+                <a href="/">About</a>
+                <a href="/gallery">Gallery</a>
+                <input name ="query" type="search" placeholder="Search..">
+                <select name="category" id="cars">
+                    <option>None</option>
+                    <option value="coupe">Coupe</option>
+                    <option value="truck">Truck</option>
+                    <option value="suv">SUV</option>
+                </select>
+                <input type="submit" value="Submit">
+            </form>
+            <h1>In html with no query</h1>
+        </body>
+        </html>
+    """,200,{"Content-Type": "text/html"}
+    else:
+        galleryList = checkListDict(query,category)
     # name = gallList.get("vehicle")
 
     listingname = []
@@ -211,6 +200,8 @@ def render_gallery(query, category):
     </body>
     </html>
     """,200,{"Content-Type": "text/html"}
+
+    
 
 
 def pass_api_rate_limit() -> tuple[bool, int | None]:
@@ -345,7 +336,7 @@ def server(
                 print(query)
                 return render_gallery(parse_query_parameters(query).get("query"),parse_query_parameters(query).get("category"))
             else:
-                return render_all_gallery()
+                return render_gallery("","")
         elif "/listing" in path:
             newPath = render_listing(listings)
             return open(newPath).read(),200,{"Content-Type": "text/html"}
