@@ -17,22 +17,18 @@ bidnumericID = 0
 listingBool = False
 bidBool = False
 listings = [
-    {"vehicle":"Dodge Challenger","url":"static/html/listing1.html","description":"Longer text for descrption", "category":"small", "numeric ID": 1, "Date": "08/20/2024",
+    {"vehicle":"Dodge Challenger","url":"https://images.unsplash.com/photo-1632686341369-8a7991237930?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","description":"Longer text for descrption", "category":"small", "numeric ID": 1, "Date": "08/20/2024",
      "bids":[
          {"bidder 1":"Carl k", "bid amount":4500, "comment":"I would love this car."},{"bidder 2":"Sam Samson", "bid amount":5500, "comment":"I just want to use money."}
          ]
     },
-    {"vehicle":"Ford Mustang","url":"static/html/listing2.html","description":"Longer text for descrption", "category":"small", "numeric ID": 2, "Date": "09/15/2024",
+    {"vehicle":"Ford Mustang","url":"https://images.unsplash.com/photo-1610378985708-ac6de045f9f3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","description":"Longer text for descrption", "category":"small", "numeric ID": 2, "Date": "09/15/2024",
      "bids":[
          {"bidder 1":"Luke Lukenson", "bid amount":2500, "comment":"Dailer driver right here."},{"bidder 2":"Peter Porker", "bid amount":6500, "comment":""}
          ]},
-    {"vehicle":"Toyota Tundra","url":"static/html/listing3.html","description":"Longer text for descrption", "category":"truck", "numeric ID": 3, "Date": "09/10/2024",
+    {"vehicle":"Toyota Tundra","url":"https://images.unsplash.com/photo-1621993202323-f438eec934ff?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","description":"Longer text for descrption", "category":"truck", "numeric ID": 3, "Date": "09/10/2024",
      "bids":[
          {"bidder 1":"Adam Apple", "bid amount":6500, "comment":"Work truck."},{"bidder 2":"Ben Benji", "bid amount":7500, "comment":"New truck for me."},{"bidder 3":"Cedar Cider", "bid amount":9500, "comment":"The Cedar Mobile."}
-         ]},
-    {"vehicle":"Toyota RAV4","url":"static/html/listing4.html","description":"Longer text for descrption", "category":"suv", "numeric ID": 4, "Date": "09/10/2024",
-     "bids":[
-         {"bidder 1":"Mike Micheal", "bid amount":3500, "comment":""},{"bidder 2":"Justin Time", "bid amount":4500, "comment":"Family vehicle."}
          ]}
 ]
 newListing =[]
@@ -122,6 +118,8 @@ def render_gallery(query, category):
         numOfBids = 0
         cat = ""
         date = ""
+        dataid = 0
+        url =""
 
         for i in range(len(listings)):
 
@@ -134,30 +132,27 @@ def render_gallery(query, category):
             maxbid = 0
 
             for j in range(len(listings[i]["bids"])):
-                print("bids: ", listings[i]["bids"][j])
                 numOfBids = numOfBids + 1
-                print("num of bids: ", numOfBids)
-
-                print(listings[i]["bids"][j]["bid amount"])
 
                 if listings[i]["bids"][j]["bid amount"] > maxbid:
                     maxbid = listings[i]["bids"][j]["bid amount"]
 
-                    print("max bid should be 5500: ", maxbid)
-
             listingname = listings[i].get("vehicle")
             cat = listings[i].get("category")
             date = listings[i].get("Date")
+            dataid += 1
+            print("dataID: ", dataid)
+            url = listings[i].get("url")
             tablestr = tablestr + """
                     <tr id="tableRow" class="box">
-                    <td id="imgData1"
-                        data-image="https://images.unsplash.com/photo-1632686341369-8a7991237930?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
-                        <a href="/listing/1">"""+listingname+"""</a>
+                    <td id='imgData"""+str(dataid)+"""'
+                        data-image="""+url+""">
+                        <a href='/listing/"""+str(dataid)+"""'>"""+listingname+"""</a>
                     </td>
                     <td>"""+str(numOfBids)+"""</td>
-                    <td>"""+str(maxbid)+"""</td>
+                    <td>$ """+str(maxbid)+"""</td>
                     <td id="timerOne">"""+date+"""</td>
-                    <td><input data-id= "3" class = "bidButton" type="button" id="delete" value="delete"></td>
+                    <td><input data-id= """+str(dataid)+""" class = "bidButton" type="button" id="delete" value="delete"></td>
                 </tr>
             """
 
@@ -169,6 +164,8 @@ def render_gallery(query, category):
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <link rel="stylesheet" href="/main.css">
             <title>Auto Auction</title>
+            <script defer src="/table.js">
+            </script>
         </head>
         <body>
             <form action="gallery" method="get" class="topnav">
@@ -229,6 +226,8 @@ def render_gallery(query, category):
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <link rel="stylesheet" href="/main.css">
             <title>Auto Auction</title>
+            <script defer src="/table.js">
+            </script>
         </head>
         <body>
             <form action="gallery" method="get" class="topnav">
