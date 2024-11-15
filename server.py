@@ -120,15 +120,9 @@ def render_gallery(query, category):
         date = ""
         dataid = 0
         url =""
+        timerid = 0
 
         for i in range(len(listings)):
-
-            # listingname.append(listings[i].get("vehicle"))
-            # print(listingname.append(listings[i].get("vehicle")))
-            # cat.append(listings[i].get("category"))
-            # numOfBids.append(listings[i].get("bids"))
-            # date.append(listings[i].get("Date"))
-
             maxbid = 0
 
             for j in range(len(listings[i]["bids"])):
@@ -141,7 +135,8 @@ def render_gallery(query, category):
             cat = listings[i].get("category")
             date = listings[i].get("Date")
             dataid += 1
-            print("dataID: ", dataid)
+            timerid +=1
+            print("dataID: ", dataid, "timerId: ", timerid)
             url = listings[i].get("url")
             tablestr = tablestr + """
                     <tr id="tableRow" class="box">
@@ -151,7 +146,7 @@ def render_gallery(query, category):
                     </td>
                     <td>"""+str(numOfBids)+"""</td>
                     <td>$ """+str(maxbid)+"""</td>
-                    <td id="timerOne">"""+date+"""</td>
+                    <td id=timer"""+str(timerid)+"""'>"""+date+"""</td>
                     <td><input data-id= """+str(dataid)+""" class = "bidButton" type="button" id="delete" value="delete"></td>
                 </tr>
             """
