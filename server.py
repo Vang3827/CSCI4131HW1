@@ -19,20 +19,20 @@ bidBool = False
 listings = [
     {"vehicle":"Dodge Challenger","url":"static/html/listing1.html","description":"Longer text for descrption", "category":"small", "numeric ID": 1, "Date": "08/20/2024",
      "bids":[
-         {"bidder 1":"Carl k", "bid amount":"4,500", "comment":"I would love this car."},{"bidder 2":"Sam Samson", "bid amount":"5,500", "comment":"I just want to use money."}
+         {"bidder 1":"Carl k", "bid amount":4500, "comment":"I would love this car."},{"bidder 2":"Sam Samson", "bid amount":5500, "comment":"I just want to use money."}
          ]
     },
     {"vehicle":"Ford Mustang","url":"static/html/listing2.html","description":"Longer text for descrption", "category":"small", "numeric ID": 2, "Date": "09/15/2024",
      "bids":[
-         {"bidder 1":"Luke Lukenson", "bid amount":"2,500", "comment":"Dailer driver right here."},{"bidder 2":"Peter Porker", "bid amount":"6,500", "comment":""}
+         {"bidder 1":"Luke Lukenson", "bid amount":2500, "comment":"Dailer driver right here."},{"bidder 2":"Peter Porker", "bid amount":6500, "comment":""}
          ]},
     {"vehicle":"Toyota Tundra","url":"static/html/listing3.html","description":"Longer text for descrption", "category":"truck", "numeric ID": 3, "Date": "09/10/2024",
      "bids":[
-         {"bidder 1":"Adam Apple", "bid amount":"6,500", "comment":"Work truck."},{"bidder 2":"Ben Benji", "bid amount":"6,500", "comment":"New truck for me."},{"bidder 3":"Cedar Cider", "bid amount":"9,500", "comment":"The Cedar Mobile."}
+         {"bidder 1":"Adam Apple", "bid amount":6500, "comment":"Work truck."},{"bidder 2":"Ben Benji", "bid amount":7500, "comment":"New truck for me."},{"bidder 3":"Cedar Cider", "bid amount":9500, "comment":"The Cedar Mobile."}
          ]},
     {"vehicle":"Toyota RAV4","url":"static/html/listing4.html","description":"Longer text for descrption", "category":"suv", "numeric ID": 4, "Date": "09/10/2024",
      "bids":[
-         {"bidder 1":"Mike Micheal", "bid amount":"3,500", "comment":""},{"bidder 2":"Justin Time", "bid amount":"4,500", "comment":"Family vehicle."}
+         {"bidder 1":"Mike Micheal", "bid amount":3500, "comment":""},{"bidder 2":"Justin Time", "bid amount":4500, "comment":"Family vehicle."}
          ]}
 ]
 newListing =[]
@@ -116,6 +116,51 @@ def render_gallery(query, category):
     print(type(query),query,type(category),category)
     
     if query == "" and category =="":
+
+        tablestr = ""
+        listingname = ""
+        numOfBids = 0
+        cat = ""
+        date = ""
+
+        for i in range(len(listings)):
+
+            # listingname.append(listings[i].get("vehicle"))
+            # print(listingname.append(listings[i].get("vehicle")))
+            # cat.append(listings[i].get("category"))
+            # numOfBids.append(listings[i].get("bids"))
+            # date.append(listings[i].get("Date"))
+
+            maxbid = 0
+
+            for j in range(len(listings[i]["bids"])):
+                print("bids: ", listings[i]["bids"][j])
+                numOfBids = numOfBids + 1
+                print("num of bids: ", numOfBids)
+
+                print(listings[i]["bids"][j]["bid amount"])
+
+                if listings[i]["bids"][j]["bid amount"] > maxbid:
+                    maxbid = listings[i]["bids"][j]["bid amount"]
+
+                    print("max bid should be 5500: ", maxbid)
+
+            listingname = listings[i].get("vehicle")
+            cat = listings[i].get("category")
+            date = listings[i].get("Date")
+            tablestr = tablestr + """
+                    <tr id="tableRow" class="box">
+                    <td id="imgData1"
+                        data-image="https://images.unsplash.com/photo-1632686341369-8a7991237930?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+                        <a href="/listing/1">"""+listingname+"""</a>
+                    </td>
+                    <td>"""+str(numOfBids)+"""</td>
+                    <td>"""+str(maxbid)+"""</td>
+                    <td id="timerOne">"""+date+"""</td>
+                    <td><input data-id= "3" class = "bidButton" type="button" id="delete" value="delete"></td>
+                </tr>
+            """
+
         return f"""
         <!DOCTYPE html>
         <html lang="en">
@@ -138,68 +183,87 @@ def render_gallery(query, category):
                 </select>
                 <input type="submit" value="Submit">
             </form>
-            <h1>In html with no query</h1>
+                <h1 class="listingh">Auto Auction list</h1>
+            <div class="listingColumn">
+                <div class="tableContainer">
+                    <table border="1">
+                        <tr>
+                            <th>Listing</th>
+                            <th>Number of Bids</th>
+                            <th>Top Bid</th>
+                            <th>Auction Ends</th>
+                        </tr>
+                        {tablestr}
+                    </table>
+                </div>
+                <div class="sideOfTable" id="imgPreview">
+                </div>
+            </div>
         </body>
         </html>
     """,200,{"Content-Type": "text/html"}
     else:
         galleryList = checkListDict(query,category)
-    # name = gallList.get("vehicle")
+        # name = gallList.get("vehicle")
 
-    listingname = []
-    numOfBids = []
-    cat = []
-    date = []
+        listingname = []
+        numOfBids = []
+        cat = []
+        date = []
 
-    for i in range(len(galleryList)):
-        listingname.append(galleryList[i].get("vehicle"))
-        cat.append(galleryList[i].get("category"))
-        numOfBids.append(galleryList[i].get("bids"))
-        date.append(galleryList[i].get("Date"))
+        for i in range(len(galleryList)):
+            print("for loop to append")
+            listingname.append(galleryList[i].get("vehicle"))
+            print(listingname.append(galleryList[i].get("vehicle")))
+            # cat.append(galleryList[i].get("category"))
+            # numOfBids.append(galleryList[i].get("bids"))
+            # date.append(galleryList[i].get("Date"))
 
-    return f"""
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/main.css">
-        <title>Auto Auction</title>
-    </head>
-    <body>
-        <form action="gallery" method="get" class="topnav">
-            <a href="/">About</a>
-            <a href="/gallery">Gallery</a>
-            <input name ="query" type="search" placeholder="Search..">
-            <select name="category" id="cars">
-                <option>None</option>
-                <option value="coupe">Coupe</option>
-                <option value="truck">Truck</option>
-                <option value="suv">SUV</option>
-            </select>
-            <input type="submit" value="Submit">
-        </form>
-        <h1>Query:{query} and Catagory:{category} </h1>
-        <p>{listingname}</p>
-        <table>
-            <table border="1">
-        <tr>
-            <th>Listing</th>
-            <th>Number of Bids</th>
-            <th>Top Bid</th>
-            <th>Auction Ends</th>
-        </tr>
-        <tr>
-            <td><a href = "/listing/1">{listingname}</a></td>
-            <td>{numOfBids}</td>
-            <td>{cat}</td>
-            <td>{date}</tb>
-        </tr>
-    </table>
+            
+
+        return f"""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" href="/main.css">
+            <title>Auto Auction</title>
+        </head>
+        <body>
+            <form action="gallery" method="get" class="topnav">
+                <a href="/">About</a>
+                <a href="/gallery">Gallery</a>
+                <input name ="query" type="search" placeholder="Search..">
+                <select name="category" id="cars">
+                    <option>None</option>
+                    <option value="coupe">Coupe</option>
+                    <option value="truck">Truck</option>
+                    <option value="suv">SUV</option>
+                </select>
+                <input type="submit" value="Submit">
+            </form>
+            <h1>Query:{query} and Catagory:{category} </h1>
+            <p>{listingname}</p>
+            <table>
+                <table border="1">
+            <tr>
+                <th>Listing</th>
+                <th>Number of Bids</th>
+                <th>Top Bid</th>
+                <th>Auction Ends</th>
+            </tr>
+            <tr>
+                <td><a href = "/listing/1">{listingname}</a></td>
+                <td>{numOfBids}</td>
+                <td>{cat}</td>
+                <td>{date}</tb>
+            </tr>
         </table>
-    </body>
-    </html>
-    """,200,{"Content-Type": "text/html"}
+            </table>
+        </body>
+        </html>
+        """,200,{"Content-Type": "text/html"}
 
     
 
